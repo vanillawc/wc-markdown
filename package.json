@@ -15,6 +15,9 @@
   "scripts": {
     "postversion": "git push --follow-tags"
   },
-  "dependencies": {},
+  "dependencies": {
+    "prism-es6": "^1.1.2",
+    "showdown": "github:evanplaice/showdown-es6"
+  },
   "devDependencies": {}
 }
