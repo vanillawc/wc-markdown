@@ -1,0 +1,20 @@
+{
+  "name": "wc-markdown",
+  "version": "1.0.0",
+  "description": "A vanilla Markdown Web Component with optional syntax highlighting support",
+  "keywords": [
+    "web-component",
+    "vanilla",
+    "markdown",
+    "syntax-highlighting"
+  ],
+  "repository": "https://github.com/evanplaice/wc-markdown",
+  "author": "Evan Plaice",
+  "license": "MIT",
+  "main": "/src/wc-markdown.js",
+  "scripts": {
+    "postversion": "git push --follow-tags"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
