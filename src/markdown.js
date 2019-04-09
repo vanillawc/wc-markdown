@@ -5,6 +5,7 @@ export class WCMarkdown extends HTMLElement {
 
   constructor() {
     super();
+    this.style.display = 'block';
   };
   
   async connectedCallback() {
