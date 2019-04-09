@@ -1,7 +1,7 @@
 import Prism from '/node_modules/prism-es6/prism.js';
 import Showdown from '/node_modules/showdown/dist/showdown.mjs';
 
-export class XMarkdown extends HTMLElement {
+export class WCMarkdown extends HTMLElement {
 
   constructor() {
     super();
@@ -46,4 +46,4 @@ export class XMarkdown extends HTMLElement {
 
 }
 
-customElements.define('wc-markdown', XMarkdown);
+customElements.define('wc-markdown', WCMarkdown);
