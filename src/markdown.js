@@ -34,7 +34,11 @@ export class WCMarkdown extends HTMLElement {
   }
 
   prepare(rawMarkdown) {
-    return rawMarkdown.split('\n').map((line) => line.trim()).join('\n')
+    return rawMarkdown.split('\n').map((line) => {
+      line = line.replace('&lt;', '<');
+      line = line.replace('&gt;', '>');
+      return line.trim();
+    }).join('\n')
   }
 
   toHtml(markdown) {
