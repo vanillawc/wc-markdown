@@ -46,4 +46,4 @@ export class XMarkdown extends HTMLElement {
 
 }
 
-customElements.define('x-markdown', XMarkdown);
+customElements.define('wc-markdown', XMarkdown);
