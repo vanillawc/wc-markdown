@@ -1,23 +1,22 @@
 {
-  "name": "wc-markdown",
-  "version": "1.0.0",
-  "description": "A vanilla Markdown Web Component with optional syntax highlighting support",
+  "name": "@vanillawc/wc-markdown",
+  "version": "1.0.0-rc0",
+  "license": "MIT",
+  "author": "Evan Plaice <evanplaice@gmail.com> (http://evanplaice.com/)",
+  "description": "A vanilla Markdown web component with optional syntax highlighting",
   "keywords": [
     "web-component",
     "vanilla",
     "markdown",
     "syntax-highlighting"
   ],
-  "repository": "https://github.com/evanplaice/wc-markdown",
-  "author": "Evan Plaice",
-  "license": "MIT",
-  "main": "/src/wc-markdown.js",
+  "repository": "https://github.com/vanillawc/wc-markdown/",
+  "main": "dist/markdown.js",
   "scripts": {
     "postversion": "git push --follow-tags"
   },
   "dependencies": {
     "prism-es6": "^1.1.2",
     "showdown": "github:evanplaice/showdown-es6"
-  },
-  "devDependencies": {}
+  }
 }
