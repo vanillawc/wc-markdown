@@ -13,6 +13,7 @@
   "repository": "https://github.com/vanillawc/wc-markdown/",
   "main": "dist/markdown.js",
   "scripts": {
+    "start": "npx live-server --open=demo",
     "postversion": "git push --follow-tags"
   },
   "dependencies": {
