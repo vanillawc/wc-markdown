@@ -12,8 +12,10 @@
   ],
   "repository": "https://github.com/vanillawc/wc-markdown/",
   "main": "dist/markdown.js",
+  "module": "src/markdown.js",
   "scripts": {
     "start": "npx live-server --open=demo",
+    "build": "npx rollup --config rollup.config.js",
     "postversion": "git push --follow-tags"
   },
   "dependencies": {
