@@ -19,5 +19,8 @@
   "dependencies": {
     "prism-es6": "^1.1.2",
     "showdown": "github:evanplaice/showdown-es6"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.1"
   }
 }
