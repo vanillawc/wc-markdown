@@ -1,5 +1,5 @@
-import Prism from '/node_modules/prism-es6/prism.js';
-import Showdown from '/node_modules/showdown/dist/showdown.mjs';
+import Prism from '../node_modules/prism-es6/prism.js';
+import Showdown from '../node_modules/showdown/dist/showdown.mjs';
 
 export class WCMarkdown extends HTMLElement {
 
