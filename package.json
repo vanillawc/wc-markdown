@@ -20,7 +20,7 @@
     "clean": "rimraf ./dist",
     "postversion": "git push --follow-tags"
   },
-  "dependencies": {
+  "peerDependencies": {
     "prism-es6": "^1.1.2",
     "showdown": "github:evanplaice/showdown-es6"
   },
