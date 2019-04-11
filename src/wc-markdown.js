@@ -36,8 +36,7 @@ export class WCMarkdown extends HTMLElement {
   prepare(rawMarkdown) {
     return rawMarkdown.split('\n').map((line) => {
       line = line.replace('&lt;', '<');
-      line = line.replace('&gt;', '>');
-      return line.trim();
+      return line.replace('&gt;', '>');
     }).join('\n')
   }
 
