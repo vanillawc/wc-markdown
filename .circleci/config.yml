@@ -27,12 +27,20 @@ jobs:
 
 workflows:
   version: 2
-  build:
+  untagged-build:
     jobs:
-      - build
-
-  tagged-publish:
+      - build:
+          filters:
+            tags:
+              ignore: /.*/
+  tagged-build:
     jobs:
+      - build:
+          filters:
+            tags:
+              only: /.*/
+            branches:
+              ignore: /.*/
       - publish:
           filters:
             tags:
