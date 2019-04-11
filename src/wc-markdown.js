@@ -35,6 +35,9 @@ export class WCMarkdown extends HTMLElement {
 
   prepare(rawMarkdown) {
     return rawMarkdown.split('\n').map((line) => {
+      const leading = line.match(/[^\s]+([#|=|-]+)/);
+      line = (leading !== null) ? line.trim() : line;
+      line = (line[0] === '#') ? line.trim() : line;
       line = line.replace('&lt;', '<');
       return line.replace('&gt;', '>');
     }).join('\n')
