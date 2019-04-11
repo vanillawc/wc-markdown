@@ -1,4 +1,4 @@
-<h1><img width="120" height="120" style="margin-bottom: -45px;" src="assets/wc-markdown-icon/wc-markdown-icon.svg" />WC-Markdown</h1>
+<h1><img width="90" src="assets/wc-markdown-readme-icon.png"> WC-Markdown</h1>
 
 [![npm](https://badgen.net/npm/v/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
 [![downloads](https://badgen.net/npm/dt/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
