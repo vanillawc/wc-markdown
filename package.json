@@ -12,7 +12,6 @@
   ],
   "repository": "https://github.com/vanillawc/wc-markdown/",
   "main": "dist/markdown.js",
-  "module": "dist/markdown.js",
   "scripts": {
     "start": "npx live-server --open=demo",
     "build": "npm run clean && npm run build:src && npm run build:assets",
