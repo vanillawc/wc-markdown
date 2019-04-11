@@ -12,8 +12,13 @@
   ],
   "repository": "https://github.com/vanillawc/wc-markdown/",
   "main": "dist/markdown.js",
+  "module": "src/markdown.js",
   "scripts": {
     "start": "npx live-server --open=demo",
+    "build": "npm run clean && npm run build:src && npm run build:assets",
+    "build:src": "npx rollup --config rollup.config.js ",
+    "build:assets": "cp -r ./node_modules/prismjs/themes ./dist/themes && cp -r ./node_modules/prismjs/components ./dist/components",
+    "clean": "rimraf ./dist",
     "postversion": "git push --follow-tags"
   },
   "dependencies": {
@@ -21,6 +26,9 @@
     "showdown": "github:evanplaice/showdown-es6"
   },
   "devDependencies": {
-    "live-server": "^1.2.1"
+    "live-server": "^1.2.1",
+    "prismjs": "^1.16.0",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.10.0"
   }
 }
