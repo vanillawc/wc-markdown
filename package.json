@@ -15,7 +15,10 @@
   "module": "src/markdown.js",
   "scripts": {
     "start": "npx live-server --open=demo",
-    "build": "npx rollup --config rollup.config.js",
+    "build": "npm run clean && npm run build:src && npm run build:assets",
+    "build:src": "npx rollup --config rollup.config.js ",
+    "build:assets": "cp -r ./node_modules/prismjs/themes ./dist/themes && cp -r ./node_modules/prismjs/components ./dist/components",
+    "clean": "rimraf ./dist",
     "postversion": "git push --follow-tags"
   },
   "dependencies": {
