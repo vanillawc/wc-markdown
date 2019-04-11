@@ -23,6 +23,9 @@
     "showdown": "github:evanplaice/showdown-es6"
   },
   "devDependencies": {
-    "live-server": "^1.2.1"
+    "live-server": "^1.2.1",
+    "prismjs": "^1.16.0",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.10.0"
   }
 }
