@@ -1,5 +1,22 @@
 version: 2
 jobs:
+  build:
+    docker:
+      - image: circleci/node:10.15.3
+    steps:
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: npm-install
+          command: npm i
+      - save_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+          paths:
+            - ./node_modules
+      - run:
+          name: build
+          command: npm run build
   publish:
     docker:
       - image: circleci/node:10.15.3
@@ -10,9 +27,15 @@ jobs:
 
 workflows:
   version: 2
-  tagged-build:
+  build:
+    jobs:
+      - build
+
+  tagged-publish:
     jobs:
       - publish:
           filters:
             tags:
-              only: /v[0-9]+(\.[0-9]+)*/
+              only: /.*/
+            branches:
+              ignore: /.*/
