@@ -1,2 +1,4 @@
+.circleci/
+assets/
 demo/
 rollup.config.js
