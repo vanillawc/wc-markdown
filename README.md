@@ -20,7 +20,7 @@ npm i @vanillawc/wc-markdown
 
 This will create the `wc-markdown` folder in `node_modules`.
 
-*Note: To reduce bloat, the dependencies for this project are marked as `peerDependencies`. It is NOT necessary to install these if you're importing from the `dist/` directory.*
+*Note: To reduce bloat, the external libraries included in this project are marked as `devDependencies`. It is NOT necessary to install these if you're importing from the `dist/` directory.*
 
 -----
 
