@@ -16,14 +16,13 @@
     "start": "npx live-server --open=demo",
     "build": "npm run clean && npm run build:src && npm run build:assets",
     "build:src": "npx rollup --config rollup.config.js ",
-    "build:assets": "cp -r ./node_modules/prismjs/themes ./dist/themes && cp -r ./node_modules/prismjs/components ./dist/components",
+    "build:assets": "cp -r ./node_modules/prism-es6/themes ./dist/themes && cp -r ./node_modules/prism-es6/components ./dist/components",
     "clean": "rimraf ./dist",
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
     "live-server": "^1.2.1",
-    "prism-es6": "^1.1.2",
-    "prismjs": "^1.16.0",
+    "prism-es6": "^1.2.0",
     "rimraf": "^2.6.3",
     "rollup": "^1.10.0",
     "showdown": "github:evanplaice/showdown-es6"
