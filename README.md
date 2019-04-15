@@ -4,7 +4,7 @@
 [![downloads](https://badgen.net/npm/dt/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
 [![CircleCI](https://circleci.com/gh/vanillawc/wc-markdown.svg?style=shield)](https://circleci.com/gh/vanillawc/wc-markdown)
 [![Known Vulnerabilities](https://snyk.io/test/npm/@vanillawc/wc-markdown/badge.svg)](https://snyk.io/test/npm/@vanillawc/wc-markdown)
-[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/evanplaice/jquery-csv/master/LICENSE)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/vanillawc/wc-markdown/master/LICENSE)
 [![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/@vanillawc/wc-markdown)
 
 A Vanilla Web Component to bring native Markdown (w/ syntax highlighting) support to the browser
