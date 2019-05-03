@@ -7,6 +7,22 @@ export class WCMarkdown extends HTMLElement {
     super();
   };
   
+  static get observedAttributes() {
+    return ['src'];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    if (oldValue !== newValue) {
+      this[name] = newValue;
+    }
+  }
+
+  get src() { return this.getAttribute('src'); }
+  set src(value) {
+    this.setAttribute('src', value);
+    this.fetch(value);
+  }
+
   async connectedCallback() {
     this.style.display = 'block';
     if (this.hasAttribute('src')) {
@@ -19,6 +35,13 @@ export class WCMarkdown extends HTMLElement {
       let contents = this.innerHTML;
       this.parse(contents);
     }
+  }
+
+  fetch(src) {
+    let contents = fetch(src)
+      .then((response) => response.text())
+      .then((contents) => this.parse(contents));
+
   }
 
   parse(contents) {
