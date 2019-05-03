@@ -5,10 +5,10 @@ export class WCMarkdown extends HTMLElement {
 
   constructor() {
     super();
-    this.style.display = 'block';
   };
   
   async connectedCallback() {
+    this.style.display = 'block';
     if (this.hasAttribute('src')) {
       const src = this.getAttribute('src');
       let contents = fetch(src)
