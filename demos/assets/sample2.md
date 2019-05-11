@@ -1,4 +1,4 @@
-## External Markdown containing JavaScript
+## External Markdown containing JavaScript w/ 'highlight' enabled
 
 This sample is loaded from `src` attribute and contains sample JavaScript.
 

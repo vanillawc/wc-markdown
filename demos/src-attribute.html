@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WC-Markdown - 'src'</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="./assets/vanillawc-favicon[32x32].png">
+    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto|Source+Code+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
+    <link rel="stylesheet" href="assets/demo.css">
+    <script type="module" src="assets/wc-markdown.js"></script>
+    <script>
+      // enable syntax highlighting
+      hljs.initHighlightingOnLoad();
+    </script>
+  </head>
+
+  <body>
+
+    <div id="header">
+      <h1 id="title">WC-Markdown</h1>
+      <div id="link"><a href="https://github.com/vanillawc/wc-markdown">GitHub</a></div>
+    </div>
+    <div id="container">
+      <section id="content">
+        <h2>Description</h2>
+        <p>Using the 'src' attribute to load an external file</p>
+        <hr>
+        <h2>Usage</h2>
+        <pre><code class="html">&lt;wc-markdown src="assets/sample.md"&gt;&lt;/wc-markdown&gt;</code></pre>
+        <hr />
+        <h2>Output</h2>
+        <div id="output">
+        <wc-markdown src="assets/sample.md"></wc-markdown>
+        </div>
+      </section>
+    </div>
+  </body>
+</html>

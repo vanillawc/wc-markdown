@@ -27,23 +27,27 @@ This will create the `wc-markdown` folder in `node_modules`.
 
 ## Usage
 
-### Load an external Markdown file with the `src` attribute
+### Load an external Markdown file using the `src` attribute
 
 ```html
 <wc-markdown src="assets/sample.md"></wc-markdown>
 ```
 
+***Demo: [WC-Markdown - 'src'][]***
+
 ### Insert the Markdown directly into the body of the element
 
 ```html
 <wc-markdown>
-  ## Inline Markdown
+## Inline Markdown
 
-  This some sample markdown.
+This some sample markdown.
 </wc-markdown>
 ```
 
 *Note: Since the content is contained within html both the opening `<` and closing `>` brackets need to be properly escaped.*
+
+***Demo: [WC-Markdown - 'innerHTML'][]***
 
 ### Enable syntax highlighting with the `highlight` attribute
 
@@ -57,6 +61,8 @@ By default, even with `highlight` enabled the code will appear unstyled. To add 
 <link rel="stylesheet" href="/node_modules/@vanillawc/wc-markdown/dist/themes/prism-okaidia.css">
 ```
 
+***Demo: [WC-Markdown - 'highlight'][]***
+
 ### Enable additional languages
 
 The core of PrismJS included with this WC only supports the following languages `[ html, xml, svg, mathml, css, javascript ]`. Support for additional languages can be found in `dist/components/`.
@@ -64,3 +70,7 @@ The core of PrismJS included with this WC only supports the following languages 
 ```html
 <script src="/node_modules/@vanillawc/wc-markdown/dist/components/prism-typescript.min.js"></script>
 ```
+
+[WC-Markdown - 'src']: https://vanillawc.github.io/wc-markdown/demos/src-attribute.html
+[WC-Markdown - 'innerHTML']: https://vanillawc.github.io/wc-markdown/demos/inner-html.html
+[WC-Markdown - 'highlight']: https://vanillawc.github.io/wc-markdown/demos/highlight-attribute.html
