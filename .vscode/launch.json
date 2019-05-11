@@ -8,20 +8,20 @@
       "type": "chrome",
       "request": "launch",
       "name": "Launch",
-      "url": "http://localhost:8080/demo/",
+      "url": "http://localhost:8080/test/",
       "webRoot": "${workspaceFolder}",
       "pathMapping": {
-        "/demo/": "${workspaceFolder}/demo/"
+        "/demo/": "${workspaceFolder}/test/"
       }
     },
     {
       "type": "browser-preview",
       "request": "launch",
       "name": "Browser Preview",
-      "url": "http://localhost:8080/demo/",
+      "url": "http://localhost:8080/test/",
       "webRoot": "${workspaceFolder}",
       "pathMapping": {
-        "/demo/": "${workspaceFolder}/demo/"
+        "/demo/": "${workspaceFolder}/test/"
       }
     }
   ]
