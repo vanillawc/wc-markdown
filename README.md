@@ -71,6 +71,14 @@ The core of PrismJS included with this WC only supports the following languages 
 <script src="/node_modules/@vanillawc/wc-markdown/dist/components/prism-typescript.min.js"></script>
 ```
 
+## Demos
+
+In addition to the links above each of the demos can be run locally with.
+
+```sh
+npm run start
+```
+
 [WC-Markdown - 'src']: https://vanillawc.github.io/wc-markdown/demos/src-attribute.html
 [WC-Markdown - 'innerHTML']: https://vanillawc.github.io/wc-markdown/demos/inner-html.html
 [WC-Markdown - 'highlight']: https://vanillawc.github.io/wc-markdown/demos/highlight-attribute.html
