@@ -6,9 +6,9 @@ export class WCMarkdown extends HTMLElement {
   constructor() {
     super();
   };
-  
+
   static get observedAttributes() {
-    return ['src'];
+    return ['src', 'table'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -65,7 +65,9 @@ export class WCMarkdown extends HTMLElement {
   }
 
   toHtml(markdown) {
-    return new Showdown.Converter().makeHtml(markdown);
+    return new Showdown.Converter({
+      tables: this.hasAttribute('table')
+    }).makeHtml(markdown);
   }
 
   syntaxHighlight() {
