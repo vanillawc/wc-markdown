@@ -71,6 +71,12 @@ The core of PrismJS included with this WC only supports the following languages 
 <script src="/node_modules/@vanillawc/wc-markdown/dist/components/prism-typescript.min.js"></script>
 ```
 
+### Enable table support with the `table` attribute
+
+```html
+<wc-markdown src="assets/sample2.md" table></wc-markdown>
+```
+
 ## Demos
 
 In addition to the links above each of the demos can be run locally with.
