@@ -1,5 +1,5 @@
 import Prism from '../node_modules/prism-es6/prism.js';
-import Showdown from '../node_modules/showdown/dist/showdown.mjs';
+import '../node_modules/marked/lib/marked.js';
 
 export class WCMarkdown extends HTMLElement {
 
@@ -8,7 +8,7 @@ export class WCMarkdown extends HTMLElement {
   };
 
   static get observedAttributes() {
-    return ['src', 'table'];
+    return ['src'];
   }
 
   attributeChangedCallback(name, oldValue, newValue) {
@@ -65,9 +65,7 @@ export class WCMarkdown extends HTMLElement {
   }
 
   toHtml(markdown) {
-    return new Showdown.Converter({
-      tables: this.hasAttribute('table')
-    }).makeHtml(markdown);
+    return marked(markdown);
   }
 
   syntaxHighlight() {

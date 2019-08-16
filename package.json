@@ -22,7 +22,7 @@
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
-    "prism-es6": "^1.2.0",
-    "showdown": "github:evanplaice/showdown-es6"
+    "marked": "^0.7.0",
+    "prism-es6": "^1.2.0"
   }
 }
