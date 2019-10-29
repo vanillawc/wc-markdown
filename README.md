@@ -44,10 +44,26 @@ This will create the `wc-markdown` folder in `node_modules`.
 This some sample markdown.
 </wc-markdown>
 ```
-
 *Note: Since the content is contained within html both the opening `<` and closing `>` brackets need to be properly escaped.*
 
 ***Demo: [WC-Markdown - 'innerHTML'][]***
+
+### Inject Markdown via the 'value' property
+
+```html
+<wc-markdown></wc-markdown>
+<script>
+window.onload = () => {;
+  document.querySelector("wc-markdown").value = `
+  ## Value Prop Markdown
+
+  This sample is loaded from the \`value\` property of the \`&lt;wc-markdown&gt;\` tag
+  `;
+};
+</script>
+```
+
+***Demo: [WC-Markdown - 'value'][]***
 
 ### Enable syntax highlighting with the `highlight` attribute
 
@@ -80,5 +96,6 @@ npm run start
 ```
 
 [WC-Markdown - 'src']: https://vanillawc.github.io/wc-markdown/demos/src-attribute.html
+[WC-Markdown - 'value']: https://vanillawc.github.io/wc-markdown/demos/value-prop.html
 [WC-Markdown - 'innerHTML']: https://vanillawc.github.io/wc-markdown/demos/inner-html.html
 [WC-Markdown - 'highlight']: https://vanillawc.github.io/wc-markdown/demos/highlight-attribute.html
