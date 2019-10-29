@@ -5,6 +5,7 @@ export class WCMarkdown extends HTMLElement {
 
   constructor() {
     super();
+    this.__value = '';
   };
 
   static get observedAttributes() {
@@ -23,29 +24,30 @@ export class WCMarkdown extends HTMLElement {
     this.fetch(value);
   }
 
+  get value() { return this.__value; }
+  set value(value) {
+    this.__value = value;
+    this.parse();
+  }
+
   async connectedCallback() {
     this.style.display = 'block';
     if (this.hasAttribute('src')) {
-      const src = this.getAttribute('src');
-      let contents = fetch(src)
-        .then((response) => response.text())
-        .then((contents) => this.parse(contents));
-
+      this.fetch(this.src);
     } else {
-      let contents = this.innerHTML;
-      this.parse(contents);
+      this.value = this.innerHTML;
     }
   }
 
-  fetch(src) {
-    let contents = fetch(src)
-      .then((response) => response.text())
-      .then((contents) => this.parse(contents));
-
+  async fetch(src) {
+    // fetch the external markdown source
+    const response = await fetch(src);
+    this.value = await response.text();
   }
 
-  parse(contents) {
+  parse() {
     // transform the contents into HTML
+    let contents = this.value;
     contents = this.prepare(contents);
     contents = this.toHtml(contents);
     this.innerHTML = contents;

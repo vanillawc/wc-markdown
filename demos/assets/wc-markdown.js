@@ -501,45 +501,7 @@ let Prism = (function () {
       // in Node.js
       return _self.Prism;
     }
-
-    if (!_.disableWorkerMessageHandler) {
-      // In worker
-      _self.addEventListener('message', (evt) => {
-			var message = JSON.parse(evt.data),
-				lang = message.language,
-				code = message.code,
-				immediateClose = message.immediateClose;
-
-			_self.postMessage(_.highlight(code, _.languages[lang], lang));
-			if (immediateClose) {
-				_self.close();
-			}
-		}, false);
-    }
-
-    return _self.Prism;
   }
-
-  // Get current script and highlight
-  // let script = document.currentScript || [].slice.call(document.getElementsByTagName('script')).pop();
-
-  // if (script) {
-  //   _.filename = script.src;
-
-  //   if (!_.manual && !script.hasAttribute('data-manual')) {
-  //     if (document.readyState !== 'loading') {
-  //       if (window.requestAnimationFrame) {
-  //         window.requestAnimationFrame(_.highlightAll);
-  //       } else {
-  //         window.setTimeout(_.highlightAll, 16);
-  //       }
-  //     } else {
-  //       document.addEventListener('DOMContentLoaded', _.highlightAll);
-  //     }
-  //   }
-  // }
-
-  return _self.Prism;
 }());
 
 if (typeof module !== 'undefined' && module.exports) {
@@ -2474,6 +2436,7 @@ class WCMarkdown extends HTMLElement {
 
   constructor() {
     super();
+    this.__value = '';
   };
 
   static get observedAttributes() {
@@ -2492,29 +2455,30 @@ class WCMarkdown extends HTMLElement {
     this.fetch(value);
   }
 
+  get value() { return this.__value; }
+  set value(value) {
+    this.__value = value;
+    this.parse();
+  }
+
   async connectedCallback() {
     this.style.display = 'block';
     if (this.hasAttribute('src')) {
-      const src = this.getAttribute('src');
-      let contents = fetch(src)
-        .then((response) => response.text())
-        .then((contents) => this.parse(contents));
-
+      this.fetch(this.src);
     } else {
-      let contents = this.innerHTML;
-      this.parse(contents);
+      this.value = this.innerHTML;
     }
   }
 
-  fetch(src) {
-    let contents = fetch(src)
-      .then((response) => response.text())
-      .then((contents) => this.parse(contents));
-
+  async fetch(src) {
+    // fetch the external markdown source
+    const response = await fetch(src);
+    this.value = await response.text();
   }
 
-  parse(contents) {
+  parse() {
     // transform the contents into HTML
+    let contents = this.value;
     contents = this.prepare(contents);
     contents = this.toHtml(contents);
     this.innerHTML = contents;
