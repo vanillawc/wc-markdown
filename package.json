@@ -16,6 +16,7 @@
   "scripts": {
     "start": "npx live-server --open=demos",
     "dev": "npx live-server --open=test",
+    "lint": "semistandard",
     "build": "npm run clean && npm run build:src && npm run build:assets",
     "build:src": "npx rollup --config rollup.config.js ",
     "build:assets": "cp -r ./node_modules/prism-es6/themes ./dist/themes && cp -r ./node_modules/prism-es6/components ./dist/components",
@@ -26,6 +27,10 @@
   },
   "devDependencies": {
     "marked": "^0.7.0",
-    "prism-es6": "^1.2.0"
+    "prism-es6": "^1.2.0",
+    "semistandard": "^14.2.0"
+  },
+  "semistandard": {
+    "ignore": ["dist/*"]
   }
 }
