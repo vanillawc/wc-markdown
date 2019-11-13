@@ -4,4 +4,4 @@ export default {
     file: 'dist/wc-markdown.js',
     format: 'esm'
   }
-}
+};
