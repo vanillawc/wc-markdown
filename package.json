@@ -20,6 +20,7 @@
     "build:src": "npx rollup --config rollup.config.js ",
     "build:assets": "cp -r ./node_modules/prism-es6/themes ./dist/themes && cp -r ./node_modules/prism-es6/components ./dist/components",
     "clean": "npx rimraf ./dist",
+    "package": "npx rimraf package && npm pack | tail -n 1 | xargs tar -xf",
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
