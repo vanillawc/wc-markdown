@@ -1,39 +1,13 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>WC-Markdown - 'highlight'</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="./assets/vanillawc-favicon[32x32].png">
-    <link href="https://fonts.googleapis.com/css?family=Lato|Roboto|Source+Code+Pro" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/monokai.min.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/highlight.min.js"></script>
-    <link rel="stylesheet" href="assets/demo.css">
-    <script type="module" src="https://cdn.jsdelivr.net/npm/@vanillawc/wc-markdown/dist/wc-markdown.min.js"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-markdown/dist/themes/prism-okaidia.min.css">
-    <script>
-      // enable syntax highlighting
-      hljs.initHighlightingOnLoad();
-    </script>
-  </head>
-
-  <body>
-
-    <div id="header">
-      <h1 id="title">WC-Markdown</h1>
-      <div id="link"><a href="https://github.com/vanillawc/wc-markdown">GitHub</a></div>
-    </div>
-    <div id="container">
-      <section id="content">
-        <h2>Description</h2>
-        <p>Enabling the 'highlight' attribute</p>
-        <hr>
-        <h2>Usage</h2>
-        <pre><code class="html">&lt;wc-markdown src="assets/sample2.md" highlight&gt;&lt;/wc-markdown&gt;</code></pre>
-        <hr />
-        <h2>Output</h2>
-        <div id="output">
-        <wc-markdown src="assets/sample2.md" highlight></wc-markdown>
-        </div>
-      </section>
-    </div>
-  </body>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@vanillawc/wc-demo/dist/wc-demo.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@vanillawc/wc-markdown/dist/wc-markdown.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-markdown/dist/themes/prism-okaidia.min.css">
+</head>
+<body>
+  <wc-demo src="assets/highlight-attribute.sample" title="WC-Markdown - 'highlight'" link="https://github.com/vanillawc/wc-markdown">Enabling the 'highlight' attribute</wc-demo>
+</body>
 </html>

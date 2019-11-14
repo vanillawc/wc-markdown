@@ -1,0 +1,10 @@
+<wc-markdown></wc-markdown>
+<script>
+window.onload = e => {
+  document.querySelector("wc-markdown").value = `
+## Value Prop Markdown
+
+This sample is loaded from the \`value\` property of the \`&lt;wc-markdown&gt;\` tag
+  `;
+};
+</script>

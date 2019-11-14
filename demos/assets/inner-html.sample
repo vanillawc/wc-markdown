@@ -1,0 +1,5 @@
+<wc-markdown>
+## Inline Markdown
+
+This sample is loaded from the `innerHTML` of the `<wc-markdown>` tag
+</wc-markdown>
