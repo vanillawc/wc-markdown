@@ -1,7 +1,7 @@
-.circleci/
+.github/
 .vscode/
 assets/
 demos/
-test/
+dev/
 rollup.config.js
 *.tgz

@@ -15,7 +15,7 @@
   "module": "dist/wc-markdown.js",
   "scripts": {
     "start": "npx live-server --open=demos",
-    "dev": "npx live-server --open=test",
+    "dev": "npx live-server --open=dev",
     "lint": "semistandard",
     "build": "npx rimraf ./dist && npm run build:src && npm run build:assets",
     "build:src": "npx rollup --config rollup.config.js ",
