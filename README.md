@@ -1,7 +1,8 @@
 <h1><img width="90" src="assets/wc-markdown-readme-icon.png"> WC-Markdown</h1>
 
-[![npm](https://badgen.net/npm/v/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
-[![downloads](https://badgen.net/npm/dt/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
+[![GitHub Releases](https://img.shields.io/github/release/vanillawc/wc-markdown.svg)](https://github.com/vanillawc/wc-markdown/releases)
+[![NPM](https://badgen.net/npm/v/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
+[![Downloads](https://badgen.net/npm/dt/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
 [![CircleCI](https://circleci.com/gh/vanillawc/wc-markdown.svg?style=shield)](https://circleci.com/gh/vanillawc/wc-markdown)
 [![Known Vulnerabilities](https://snyk.io/test/npm/@vanillawc/wc-markdown/badge.svg)](https://snyk.io/test/npm/@vanillawc/wc-markdown)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/vanillawc/wc-markdown/master/LICENSE)
