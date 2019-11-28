@@ -3,16 +3,16 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@vanillawc/wc-demo/dist/wc-demo.min.js"></script>
+  <script type="module" src="https://cdn.jsdelivr.net/npm/@vanillawc/wc-demo@1.1.1/dist/wc-demo.min.js"></script>
   <script type="module" src="https://cdn.jsdelivr.net/npm/@vanillawc/wc-markdown/dist/wc-markdown.min.js"></script>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@vanillawc/wc-markdown/dist/themes/prism-okaidia.min.css">
 </head>
 <body>
-  <wc-demo src="assets/value-prop.sample" title="WC-Markdown - 'value'" link="https://github.com/vanillawc/wc-markdown">Loading markdown from the 'value' property</wc-demo>
+  <wc-demo title="WC-Markdown - 'value'" link="https://github.com/vanillawc/wc-markdown" desc="Loading markdown from the 'value' property" src="assets/value-prop.sample"></wc-demo>
   <script defer>
     window.addEventListener('load', e =>{
       setTimeout(() => {
-        document.querySelector('wc-demo').shadowRoot.querySelector('wc-markdown').value = `
+        document.querySelector('wc-markdown').value = `
 ## Value Prop Markdown
 
 This sample is loaded from the \`value\` property of the \`&lt;wc-markdown&gt;\` tag
