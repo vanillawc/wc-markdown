@@ -5,7 +5,7 @@
   "author": "Evan Plaice <evanplaice@gmail.com> (http://evanplaice.com/)",
   "description": "A vanilla Markdown web component with optional syntax highlighting",
   "keywords": [
-    "web-component",
+    "web-components",
     "vanilla",
     "markdown",
     "syntax-highlighting"
