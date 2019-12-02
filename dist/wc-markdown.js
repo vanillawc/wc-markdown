@@ -496,12 +496,50 @@ let Prism = (function () {
     return `<${  env.tag  } class="${  env.classes.join(' ')  }"${  attributes ? ' ' + attributes : ''  }>${  env.content  }</${  env.tag  }>`;
   };
 
-  {
-    {
+  if (!_self.document) {
+    if (!_self.addEventListener) {
       // in Node.js
       return _self.Prism;
     }
+
+    if (!_.disableWorkerMessageHandler) {
+      // In worker
+      _self.addEventListener('message', (evt) => {
+			var message = JSON.parse(evt.data),
+				lang = message.language,
+				code = message.code,
+				immediateClose = message.immediateClose;
+
+			_self.postMessage(_.highlight(code, _.languages[lang], lang));
+			if (immediateClose) {
+				_self.close();
+			}
+		}, false);
+    }
+
+    return _self.Prism;
   }
+
+  // Get current script and highlight
+  // let script = document.currentScript || [].slice.call(document.getElementsByTagName('script')).pop();
+
+  // if (script) {
+  //   _.filename = script.src;
+
+  //   if (!_.manual && !script.hasAttribute('data-manual')) {
+  //     if (document.readyState !== 'loading') {
+  //       if (window.requestAnimationFrame) {
+  //         window.requestAnimationFrame(_.highlightAll);
+  //       } else {
+  //         window.setTimeout(_.highlightAll, 16);
+  //       }
+  //     } else {
+  //       document.addEventListener('DOMContentLoaded', _.highlightAll);
+  //     }
+  //   }
+  // }
+
+  return _self.Prism;
 }());
 
 if (typeof module !== 'undefined' && module.exports) {
