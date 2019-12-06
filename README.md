@@ -1,9 +1,9 @@
 [![GitHub Releases](https://img.shields.io/github/release/vanillawc/wc-markdown.svg)](https://github.com/vanillawc/wc-markdown/releases)
-[![NPM](https://badgen.net/npm/v/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
+[![NPM Releases](https://badgen.net/npm/v/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
 [![Downloads](https://badgen.net/npm/dt/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
 [![Known Vulnerabilities](https://snyk.io/test/npm/@vanillawc/wc-markdown/badge.svg)](https://snyk.io/test/npm/@vanillawc/wc-markdown)
 [![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/vanillawc/wc-markdown/master/LICENSE)
-[![Published on webcomponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/@vanillawc/wc-markdown)
+[![Published on WebComponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/@vanillawc/wc-markdown)
 [![Release Status](https://github.com/vanillawc/wc-markdown/workflows/Release/badge.svg)](https://github.com/vanillawc/wc-markdown/actions)
 
 A Vanilla Web Component to bring native Markdown (w/ syntax highlighting) support to the browser
