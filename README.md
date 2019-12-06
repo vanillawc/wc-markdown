@@ -8,7 +8,17 @@
 
 A Vanilla Web Component to bring native Markdown (w/ syntax highlighting) support to the browser
 
- <!-- TODO: Add video graphic here -->
+<!--
+```
+<custom-element-demo>
+  <template>
+    <script type="module" src="./dist/wc-markdown.js"></script>
+    <link rel="stylesheet" href="./dist/themes/prism-okaidia.css">
+    <wc-markdown src="./dev/sample2.md" highlight></wc-markdown>
+  </template>
+</custom-element-demo>
+```
+-->
 
 -----
 
