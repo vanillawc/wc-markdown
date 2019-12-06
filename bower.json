@@ -1,0 +1,14 @@
+{
+  "name": "@vanillawc/wc-markdown",
+  "authors": [
+    "Evan Plaice <evanplaice@gmail.com>"
+  ],
+  "keywords": [
+    "web-components",
+    "vanilla",
+    "markdown",
+    "syntax-highlighting"
+  ],
+  "license": "MIT",
+  "dependencies": {}
+}
