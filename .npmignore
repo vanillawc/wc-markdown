@@ -1,7 +1,7 @@
+.config/
 .github/
 .vscode/
 assets/
 demos/
 dev/
-rollup.config.js
 *.tgz
