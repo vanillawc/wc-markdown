@@ -88,7 +88,7 @@ In addition to the links above each of the demos can be run locally with.
 npm run start
 ```
 
-[WC-Markdown - 'src']: https://vanillawc.github.io/wc-markdown/demos/src-attribute.html
-[WC-Markdown - 'value']: https://vanillawc.github.io/wc-markdown/demos/value-prop.html
-[WC-Markdown - 'innerHTML']: https://vanillawc.github.io/wc-markdown/demos/inner-html.html
-[WC-Markdown - 'highlight']: https://vanillawc.github.io/wc-markdown/demos/highlight-attribute.html
+[WC-Markdown - 'src']: https://vanillawc.github.io/wc-markdown/demo/src-attribute.html
+[WC-Markdown - 'value']: https://vanillawc.github.io/wc-markdown/demo/value-prop.html
+[WC-Markdown - 'innerHTML']: https://vanillawc.github.io/wc-markdown/demo/inner-html.html
+[WC-Markdown - 'highlight']: https://vanillawc.github.io/wc-markdown/demo/highlight-attribute.html
