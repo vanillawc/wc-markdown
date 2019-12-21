@@ -2473,13 +2473,20 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 /* eslint no-undef: 0 */
 
 class WCMarkdown extends HTMLElement {
-  constructor () {
-    super();
-    this.__value = '';
-  }
-
   static get observedAttributes () {
     return ['src'];
+  }
+
+  get src () { return this.getAttribute('src'); }
+  set src (value) {
+    this.setAttribute('src', value);
+    this.setSrc(value);
+  }
+
+  get value () { return this.__value; }
+  set value (value) {
+    this.__value = value;
+    this.setValue();
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
@@ -2488,60 +2495,54 @@ class WCMarkdown extends HTMLElement {
     }
   }
 
-  get src () { return this.getAttribute('src'); }
-  set src (value) {
-    this.setAttribute('src', value);
-    this.fetch(value);
-  }
-
-  get value () { return this.__value; }
-  set value (value) {
-    this.__value = value;
-    this.parse();
+  constructor () {
+    super();
+    this.__value = '';
   }
 
   async connectedCallback () {
     this.style.display = 'block';
-    if (this.hasAttribute('src')) {
-      this.fetch(this.src);
-    } else {
-      this.value = this.innerHTML;
+
+    if (this.innerHTML) {
+      this.__value = this.innerHTML;
     }
   }
 
-  async fetch (src) {
-    // fetch the external markdown source
-    const response = await fetch(src);
-    this.value = await response.text();
+  async setSrc (src) {
+    this.__value = await this.fetchSrc(src);
+    this.setValue();
   }
 
-  parse () {
-    // transform the contents into HTML
-    let contents = this.value;
-    contents = this.prepare(contents);
-    contents = this.toHtml(contents);
+  async fetchSrc (src) {
+    const response = await fetch(src);
+    return response.text();
+  }
+
+  setValue () {
+    let contents = this.__value;
+    contents = WCMarkdown.prepare(contents);
+    contents = WCMarkdown.toHtml(contents);
     this.innerHTML = contents;
 
-    // syntax highlight
     if (this.hasAttribute('highlight')) {
-      this.syntaxHighlight();
+      WCMarkdown.highlight(this);
     }
   }
 
-  prepare (rawMarkdown) {
-    return rawMarkdown.split('\n').map((line) => {
+  static prepare (markdown) {
+    return markdown.split('\n').map((line) => {
       line.trim();
       line = line.replace('&lt;', '<');
       return line.replace('&gt;', '>');
     }).join('\n');
   }
 
-  toHtml (markdown) {
+  static toHtml (markdown) {
     return marked(markdown);
   }
 
-  syntaxHighlight () {
-    Prism.highlightAllUnder(this);
+  static highlight (element) {
+    Prism.highlightAllUnder(element);
   }
 }
 
