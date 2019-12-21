@@ -2,6 +2,6 @@
 .github/
 .vscode/
 assets/
-demos/
+demo/
 dev/
 *.tgz
