@@ -21,7 +21,6 @@
     "build:assets": "cp -r ./node_modules/prism-es6/themes ./dist/themes && cp -r ./node_modules/prism-es6/components ./dist/components",
     "package": "npx rimraf package && npm pack | tail -n 1 | xargs tar -xf",
     "preversion": "npm run lint",
-    "version": "npm run build && git add dist/* && git diff --quiet && git diff --staged --quiet || git commit -am 'Bump'",
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
