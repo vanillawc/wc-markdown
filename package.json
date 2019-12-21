@@ -30,7 +30,7 @@
   },
   "semistandard": {
     "ignore": [
-      "dist/*"
+      "dist/components/*"
     ]
   }
 }
