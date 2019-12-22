@@ -7,6 +7,12 @@ export class WCMarkdown extends HTMLElement {
     return ['src'];
   }
 
+  attributeChangedCallback (name, oldValue, newValue) {
+    if (oldValue !== newValue) {
+      this[name] = newValue;
+    }
+  }
+
   get src () { return this.getAttribute('src'); }
   set src (value) {
     this.setAttribute('src', value);
@@ -17,12 +23,6 @@ export class WCMarkdown extends HTMLElement {
   set value (value) {
     this.__value = value;
     this.setValue();
-  }
-
-  attributeChangedCallback (name, oldValue, newValue) {
-    if (oldValue !== newValue) {
-      this[name] = newValue;
-    }
   }
 
   constructor () {
