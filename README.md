@@ -20,13 +20,22 @@ Then import the `index.js` file at the root of the package.
 
 ## Usage
 
-### Load an external Markdown file using the `src` attribute
+**Attributes**
+
+- `src` - load an external source file
+- `highlight` - when present, syntax highlighting is applied to code
+
+**Properties**
+
+- `value` - get/set the source code
+
+### External Source
 
 ```html
-<wc-markdown src="assets/sample.md"></wc-markdown>
+<wc-markdown src="sample.md"></wc-markdown>
 ```
 
-### Insert the Markdown directly into the body of the element
+### Inline Source
 
 ```html
 <wc-markdown>
@@ -35,41 +44,28 @@ Then import the `index.js` file at the root of the package.
 This some sample markdown.
 </wc-markdown>
 ```
-*Note: Since the content is contained within html both the opening `<` and closing `>` brackets need to be properly escaped.*
+*Note: HTML special chars (ex `<`, `>`) need to be escaped to prevent them from being interpreted as HTML.*
 
-### Inject Markdown via the 'value' property
+### Syntax Highlighting
+
+To apply syntax highlighting, add the `highlight` attribute.
 
 ```html
-<wc-markdown></wc-markdown>
-<script>
-window.onload = () => {;
-  document.querySelector("wc-markdown").value = `
-  ## Value Prop Markdown
-
-  This sample is loaded from the \`value\` property of the \`&lt;wc-markdown&gt;\` tag
-  `;
-};
-</script>
+<wc-markdown src="sample2.md" highlight></wc-markdown>
 ```
 
-### Enable syntax highlighting with the `highlight` attribute
+Highlighting requires the import of a CSS theme. Themes can be found under `themes/`.
 
 ```html
-<wc-markdown src="assets/sample2.md" highlight></wc-markdown>
+<link rel="stylesheet" href="/node_modules/@vanillawc/wc-markdown/themes/prism-okaidia.css">
 ```
 
-By default, even with `highlight` enabled the code will appear unstyled. To add style a theme needs to be imported globally. The themes can be found under `dist/themes/`.
+### Additional Languages
+
+The PrismJS core only includes the following languages `[html, xml, svg, mathml, css, javascript]`. Additional language modules can be imported from `components/`.
 
 ```html
-<link rel="stylesheet" href="/node_modules/@vanillawc/wc-markdown/dist/themes/prism-okaidia.css">
-```
-
-### Enable additional languages
-
-The core of PrismJS included with this WC only supports the following languages `[ html, xml, svg, mathml, css, javascript ]`. Support for additional languages can be found in `dist/components/`.
-
-```html
-<script src="/node_modules/@vanillawc/wc-markdown/dist/components/prism-typescript.min.js"></script>
+<script src="/node_modules/@vanillawc/wc-markdown/components/prism-typescript.min.js"></script>
 ```
 
 -----
