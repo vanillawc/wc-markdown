@@ -1,6 +1,6 @@
 {
   "name": "@vanillawc/wc-markdown",
-  "version": "1.3.15",
+  "version": "1.3.14",
   "license": "MIT",
   "author": "Evan Plaice <evanplaice@gmail.com> (http://evanplaice.com/)",
   "description": "A vanilla Markdown web component with optional syntax highlighting",
@@ -18,7 +18,7 @@
     "lint": "semistandard",
     "build": "npx rimraf ./dist && npm run build:src && npm run build:assets",
     "build:src": "npx rollup --config .config/rollup.config.js ",
-    "build:assets": "cp -r ./node_modules/prism-es6/themes ./dist/themes && cp -r ./node_modules/prism-es6/components ./dist/components",
+    "build:assets": "cp -r node_modules/prism-es6/themes themes && cp -r node_modules/prism-es6/components components",
     "package": "npx rimraf package && npm pack | tail -n 1 | xargs tar -xf",
     "preversion": "npm run lint",
     "postversion": "git push --follow-tags"
