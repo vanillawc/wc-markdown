@@ -1,7 +1,7 @@
 export default {
   input: 'src/wc-markdown.js',
   output: {
-    file: 'dist/wc-markdown.js',
+    file: 'index.js',
     format: 'esm'
   }
 };
