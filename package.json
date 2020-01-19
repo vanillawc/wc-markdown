@@ -26,6 +26,7 @@
   "devDependencies": {
     "marked": "^0.7.0",
     "prism-es6": "^1.2.0",
+    "rollup-plugin-terser": "^5.2.0",
     "semistandard": "^14.2.0"
   },
   "semistandard": {
