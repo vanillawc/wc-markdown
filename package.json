@@ -2,7 +2,7 @@
   "name": "@vanillawc/wc-markdown",
   "version": "1.4.1",
   "license": "MIT",
-  "author": "Evan Plaice <evanplaice@gmail.com> (http://evanplaice.com/)",
+  "author": "Evan Plaice <evanplaice@gmail.com> (https://evanplaice.com/)",
   "description": "A vanilla Markdown web component with optional syntax highlighting",
   "keywords": [
     "web-components",
