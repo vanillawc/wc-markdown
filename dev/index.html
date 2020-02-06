@@ -4,7 +4,9 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="../themes/prism-okaidia.css">
-  <script type="module" src="../index.min.js"></script>
+  <script type="module" src="../src/wc-markdown.js"></script>
+  <script type="module" src="../components/prism-c.js"></script>
+  <script type="module" src="../components/prism-cpp.js"></script>
   <script>
     function handleClick() {
       document.getElementById('async').src = "sample.md";
@@ -25,5 +27,6 @@ This sample is loaded from the `innerHTML` of the `&lt;wc-markdown&gt;` tag
 
   <wc-markdown id="async" src="sample2.md" highlight></wc-markdown>
 
+  <wc-markdown src="sample3.md" highlight></wc-markdown>
 </body>
 </html>
