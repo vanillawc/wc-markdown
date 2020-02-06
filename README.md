@@ -54,18 +54,31 @@ To apply syntax highlighting, add the `highlight` attribute.
 <wc-markdown src="sample2.md" highlight></wc-markdown>
 ```
 
+### Syntax Highlighting - Themes
+
 Highlighting requires the import of a CSS theme. Themes can be found under `themes/`.
 
 ```html
 <link rel="stylesheet" href="/node_modules/@vanillawc/wc-markdown/themes/prism-okaidia.css">
 ```
 
-### Additional Languages
+### Syntax Highlighting - Languages
 
-The PrismJS core only includes the following languages `[html, xml, svg, mathml, css, javascript]`. Additional language modules can be imported from `components/`.
+The PrismJS core includes the following languages `[html, xml, svg, mathml, css, javascript]`.
+
+Additional language modules can be imported from `components/`.
 
 ```html
-<script src="/node_modules/@vanillawc/wc-markdown/components/prism-typescript.min.js"></script>
+<script type="module" src="/node_modules/@vanillawc/wc-markdown/index.js"></script>
+<script type="module" src="/node_modules/@vanillawc/wc-markdown/components/prism-typescript.js"></script>
+```
+
+Some languages extend others. Ex, `C++` extends `C` so both need to be imported in the correct order.
+
+```html
+<script type="module" src="/node_modules/@vanillawc/wc-markdown/index.js"></script>
+<script type="module" src="/node_modules/@vanillawc/wc-markdown/components/prism-c.js"></script>
+<script type="module" src="/node_modules/@vanillawc/wc-markdown/components/prism-cpp.js"></script>
 ```
 
 -----
