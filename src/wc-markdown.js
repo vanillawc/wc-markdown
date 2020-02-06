@@ -2,6 +2,8 @@
 import Prism from '../node_modules/prism-es6/prism.js';
 import '../node_modules/marked/lib/marked.js';
 
+self.Prism = Prism;
+
 export class WCMarkdown extends HTMLElement {
   static get observedAttributes () {
     return ['src'];

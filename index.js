@@ -2472,6 +2472,8 @@ if (typeof module !== 'undefined' && typeof exports === 'object') {
 
 /* eslint no-undef: 0 */
 
+self.Prism = Prism;
+
 class WCMarkdown extends HTMLElement {
   static get observedAttributes () {
     return ['src'];
