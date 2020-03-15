@@ -2534,7 +2534,6 @@ class WCMarkdown extends HTMLElement {
 
   static prepare (markdown) {
     return markdown.split('\n').map((line) => {
-      line.trim();
       line = line.replace('&lt;', '<');
       return line.replace('&gt;', '>');
     }).join('\n');
