@@ -2506,7 +2506,7 @@ class WCMarkdown extends HTMLElement {
     this.style.display = 'block';
 
     if (this.innerHTML) {
-      this.__value = this.innerHTML;
+      this.__value = this.textContent;
       this.setValue();
     }
   }
