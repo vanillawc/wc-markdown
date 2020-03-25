@@ -2505,7 +2505,7 @@ class WCMarkdown extends HTMLElement {
   async connectedCallback () {
     this.style.display = 'block';
 
-    if (this.innerHTML) {
+    if (this.textContent) {
       this.__value = this.textContent;
       this.setValue();
     }
