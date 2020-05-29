@@ -1,22 +1,35 @@
-[![GitHub Releases](https://badgen.net/github/tag/vanillawc/wc-markdown)](https://github.com/vanillawc/wc-markdown/releases)
-[![NPM Release](https://badgen.net/npm/v/@vanillawc/wc-markdown)](https://www.npmjs.com/package/@vanillawc/wc-markdown)
-[![Bundlephobia](https://badgen.net/bundlephobia/minzip/@vanillawc/wc-markdown)](https://bundlephobia.com/result?p=@vanillawc/wc-markdown)
-[![MIT License](https://badgen.net/github/license/vanillawc/wc-markdown)](https://raw.githubusercontent.com/vanillawc/wc-markdown/master/LICENSE)
-[![Published on WebComponents.org](https://img.shields.io/badge/webcomponents.org-published-blue.svg)](https://www.webcomponents.org/element/@vanillawc/wc-markdown)
-[![Latest Status](https://github.com/vanillawc/wc-markdown/workflows/Latest/badge.svg)](https://github.com/vanillawc/wc-markdown/actions)
-[![Release Status](https://github.com/vanillawc/wc-markdown/workflows/Release/badge.svg)](https://github.com/vanillawc/wc-markdown/actions)
+<h1 align="center">&lt;wc-markdown&gt;: Markdown with Syntax Highlighing</h1>
 
-A Vanilla Web Component to bring native Markdown (w/ syntax highlighting) support to the browser
+<div align="center">
+  <a href="https://github.com/vanillawc/wc-markdown/releases"><img src="https://badgen.net/github/tag/vanillawc/wc-markdown" alt="GitHub Releases"></a>
+  <a href="https://www.npmjs.com/package/@vanillawc/wc-markdown"><img src="https://badgen.net/npm/v/@vanillawc/wc-markdown" alt="NPM Releases"></a>
+  <a href="https://bundlephobia.com/result?p=@vanillawc/wc-markdown"><img src="https://badgen.net/bundlephobia/minzip/@vanillawc/wc-markdown" alt="Bundlephobia"></a>
+  <a href="https://raw.githubusercontent.com/vanillawc/wc-markdown/master/LICENSE"><img src="https://badgen.net/github/license/vanillawc/wc-markdown" alt="MIT License"></a>
+  <a href="https://www.webcomponents.org/element/@vanillawc/wc-markdown"><img src="https://img.shields.io/badge/webcomponents.org-published-blue.svg" alt="Published on WebComponents.org"></a>
+  <a href="https://github.com/vanillawc/wc-markdown/actions"><img src="https://github.com/vanillawc/wc-markdown/workflows/Latest/badge.svg" alt="Latest Status"></a>
+  <a href="https://github.com/vanillawc/wc-markdown/actions"><img src="https://github.com/vanillawc/wc-markdown/workflows/Release/badge.svg" alt="Release Status"></a>
+</div>
 
 ## Installation
 
+*Installation*
 ```sh
 npm i @vanillawc/wc-markdown
 ```
 
-Then import the `index.js` file at the root of the package.
+*Import from NPM*
+```html
+<script type="module" src="node_modules/@vanillawc/wc-markdown/index.js"></script>
+```
 
------
+*Import from CDN*
+```html
+<script type="module" src="https://cdn.jsdelivr.net/gh/vanillawc/wc-markdown/index.js"></script>
+```
+
+## Demo
+
+Try it on [WebComponents.dev](https://webcomponents.dev/edit/FxoojbLdYqBJVJj4Tsex?sv=1&pm=1)
 
 ## Usage
 
@@ -54,7 +67,7 @@ To apply syntax highlighting, add the `highlight` attribute.
 <wc-markdown src="sample2.md" highlight></wc-markdown>
 ```
 
-### Syntax Highlighting - Themes
+### Syntax Highlighting - Theming
 
 Highlighting requires the import of a CSS theme. Themes can be found under `themes/`.
 
@@ -80,9 +93,3 @@ Some languages extend others. Ex, `C++` extends `C` so both need to be imported 
 <script type="module" src="/node_modules/@vanillawc/wc-markdown/components/prism-c.js"></script>
 <script type="module" src="/node_modules/@vanillawc/wc-markdown/components/prism-cpp.js"></script>
 ```
-
------
-
-## Demo
-
-### [WC-Markdown-Demo - WebComponents.dev](https://webcomponents.dev/edit/FxoojbLdYqBJVJj4Tsex?sv=1&pm=1)
