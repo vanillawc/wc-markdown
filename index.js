@@ -2476,7 +2476,7 @@ self.Prism = Prism;
 
 class WCMarkdown extends HTMLElement {
   static get observedAttributes () {
-    return ['src'];
+    return ['src']
   }
 
   attributeChangedCallback (name, oldValue, newValue) {
@@ -2485,13 +2485,13 @@ class WCMarkdown extends HTMLElement {
     }
   }
 
-  get src () { return this.getAttribute('src'); }
+  get src () { return this.getAttribute('src') }
   set src (value) {
     this.setAttribute('src', value);
     this.setSrc(value);
   }
 
-  get value () { return this.__value; }
+  get value () { return this.__value }
   set value (value) {
     this.__value = value;
     this.setValue();
@@ -2518,7 +2518,7 @@ class WCMarkdown extends HTMLElement {
 
   async fetchSrc (src) {
     const response = await fetch(src);
-    return response.text();
+    return response.text()
   }
 
   setValue () {
@@ -2535,12 +2535,12 @@ class WCMarkdown extends HTMLElement {
   static prepare (markdown) {
     return markdown.split('\n').map((line) => {
       line = line.replace('&lt;', '<');
-      return line.replace('&gt;', '>');
-    }).join('\n');
+      return line.replace('&gt;', '>')
+    }).join('\n')
   }
 
   static toHtml (markdown) {
-    return marked(markdown);
+    return marked(markdown)
   }
 
   static highlight (element) {
