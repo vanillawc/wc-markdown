@@ -1,4 +1,4 @@
-<h1 align="center">&lt;wc-markdown&gt;: Markdown with Syntax Highlighing</h1>
+<h1 align="center">&lt;wc-markdown&gt; Markdown with Syntax Highlighing</h1>
 
 <div align="center">
   <a href="https://github.com/vanillawc/wc-markdown/releases"><img src="https://badgen.net/github/tag/vanillawc/wc-markdown" alt="GitHub Releases"></a>
