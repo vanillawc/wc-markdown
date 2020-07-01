@@ -1,7 +1,5 @@
-.config/
 .github/
 .vscode/
-assets/
-examples/
 dev/
+examples/
 *.tgz

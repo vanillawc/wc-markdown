@@ -15,23 +15,23 @@
   "scripts": {
     "start": "npx live-server --no-browser --port=5500 --open=dev",
     "lint": "esmtk lint",
-    "build": "npm run build:main && npm run build:min",
-    "build:main": "npx rollup --config .config/main.config.js",
-    "build:min": "npx rollup --config .config/min.config.js",
-    "build:assets": "cp -r node_modules/prism-es6/themes themes && cp -r node_modules/prism-es6/components components",
+    "build": "npm run bundle && npm run minify",
+    "bundle": "esmtk bundle src/wc-markdown.js index.js",
+    "minify": "esmtk minify src/wc-markdown.js index.min.js",
+    "copy": "cp -r node_modules/prism-es6/themes themes && cp -r node_modules/prism-es6/components components",
     "package": "npx rimraf package && npm pack | tail -n 1 | xargs tar -xf",
     "preversion": "npm run lint",
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
-    "esmtk": "^0.1.1",
+    "esmtk": "^0.4.0",
     "marked": "^0.7.0",
-    "prism-es6": "^1.2.0",
-    "rollup-plugin-terser": "^5.2.0"
+    "prism-es6": "^1.2.0"
   },
   "standard": {
     "ignore": [
-      "components/*"
+      "components/*",
+      "index.js"
     ]
   }
 }
