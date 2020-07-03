@@ -7,14 +7,10 @@
   <script type="module" src="../src/wc-markdown.js"></script>
   <script type="module" src="../components/prism-c.js"></script>
   <script type="module" src="../components/prism-cpp.js"></script>
-  <script>
-    function handleClick() {
-      document.getElementById('async').src = "sample.md";
-    }
-  </script>
 </head>
 <body>
-  <input type="button" onClick="handleClick()">
+  
+  <!-- inline -->
   <wc-markdown>
     <script type="wc-content">
       ## Inline Markdown
@@ -23,12 +19,14 @@
     </script>
   </wc-markdown>
 
+  <!-- external -->
   <wc-markdown src="sample.md"></wc-markdown>
 
+  <!-- syntax-highlighting -->
   <wc-markdown src="sample2.md" highlight></wc-markdown>
 
-  <wc-markdown id="async" src="sample2.md" highlight></wc-markdown>
-
+  <!-- c++ syntax-highlighting -->
   <wc-markdown src="sample3.md" highlight></wc-markdown>
+
 </body>
 </html>
