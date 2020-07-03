@@ -35,9 +35,19 @@ export class WCMarkdown extends HTMLElement {
   async connectedCallback () {
     this.style.display = 'block'
 
-    if (this.textContent) {
-      this.__value = this.textContent
-      this.setValue()
+    const scriptTag = this.getElementsByTagName('script')[0]
+
+    if (scriptTag) {
+      if (scriptTag.getAttribute('type') === 'wc-content') {
+        let content = WCMarkdown.dedentText(scriptTag.innerHTML)
+        content = content.replace(/&lt;(\/?script)(.*?)&gt;/g, '<$1$2>')
+        this.value = content
+      }
+    } else {
+      if (this.textContent) {
+        this.__value = this.textContent
+        this.setValue()
+      }
     }
   }
 
@@ -75,6 +85,51 @@ export class WCMarkdown extends HTMLElement {
 
   static highlight (element) {
     Prism.highlightAllUnder(element)
+  }
+
+  /**
+   * De-dents the code by getting the padding from the first line,
+   * then removes the same indent amount padding from the rest of the lines
+   *
+   * @param {string} text - the text to dedent
+   * @returns {string} the dedented text
+   */
+  static dedentText (text) {
+    const lines = text.split('\n')
+
+    // remove the first line if it is an empty line
+    if (lines[0] === '') lines.splice(0, 1)
+
+    const initline = lines[0]
+    let fwdPad = 0
+    const usingTabs = initline[0] === '\t'
+    const checkChar = usingTabs ? '\t' : ' '
+
+    while (true) {
+      if (initline[fwdPad] === checkChar) {
+        fwdPad += 1
+      } else {
+        break
+      }
+    }
+
+    const fixedLines = []
+
+    for (const line of lines) {
+      let fixedLine = line
+      for (let i = 0; i < fwdPad; i++) {
+        if (fixedLine[0] === checkChar) {
+          fixedLine = fixedLine.substring(1)
+        } else {
+          break
+        }
+      }
+      fixedLines.push(fixedLine)
+    }
+
+    if (fixedLines[fixedLines.length - 1] === '') fixedLines.splice(fixedLines.length - 1, 1)
+
+    return fixedLines.join('\n')
   }
 }
 
