@@ -53,12 +53,14 @@ Try it on [WebComponents.dev](https://webcomponents.dev/edit/FxoojbLdYqBJVJj4Tse
 
 ```html
 <wc-markdown>
-## Inline Markdown
+  <script type="wc-content">
+    ## Inline Markdown
 
-This some sample markdown.
+    This some sample markdown.
+  </script>
 </wc-markdown>
 ```
-*Note: HTML special chars (ex `<`, `>`) need to be escaped to prevent them from being interpreted as HTML.*
+*Note: The </script> word cannot be used inside here, you'll have to use the escaped &lt;/script&gt; version instead, you may also use &lt;script&gt; for the opening <script> tag if you wish to*
 
 ### Syntax Highlighting
 
