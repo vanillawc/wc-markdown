@@ -60,7 +60,7 @@ Try it on [WebComponents.dev](https://webcomponents.dev/edit/FxoojbLdYqBJVJj4Tse
   </script>
 </wc-markdown>
 ```
-*Note: The `</script>` word cannot be used inside here, you'll have to use the escaped &lt;/script&gt; version instead, you may also use &lt;script&gt; for the opening `<script>` tag if you wish to*
+*Note: The `</script>` word cannot be used inside here, you'll have to use the escaped `&lt;/script&gt;` version instead, you may also use `&lt;script&gt;` for the opening `<script>` tag if you wish to*
 
 ### Syntax Highlighting
 
