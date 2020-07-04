@@ -1,6 +1,6 @@
 {
   "name": "@vanillawc/wc-markdown",
-  "version": "1.6.1",
+  "version": "1.6.2",
   "license": "MIT",
   "author": "Evan Plaice <evanplaice@gmail.com> (https://evanplaice.com/)",
   "description": "A vanilla Markdown web component with optional syntax highlighting",
