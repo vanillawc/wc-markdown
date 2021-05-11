@@ -16,7 +16,7 @@
     "start": "npx live-server --no-browser --port=5500 --open=dev",
     "lint": "esmtk lint",
     "build": "npm run build:esm && npm run build:min",
-    "build:esm": "esmtk commonjs src/wc-markdown.js index.js",
+    "build:esm": "esmtk bundle src/wc-markdown.js index.js",
     "build:min": "esmtk minify src/wc-markdown.js index.min.js",
     "copy": "npm run copy:themes && npm run copy:components",
     "copy:themes": "cp -r node_modules/prism-es6/themes themes",

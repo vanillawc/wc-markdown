@@ -1,16 +1,3 @@
-var __defProp = Object.defineProperty;
-var __markAsModule = (target) => __defProp(target, "__esModule", {value: true});
-var __export = (target, all) => {
-  for (var name in all)
-    __defProp(target, name, {get: all[name], enumerable: true});
-};
-
-// src/wc-markdown.js
-__markAsModule(exports);
-__export(exports, {
-  WCMarkdown: () => WCMarkdown
-});
-
 // node_modules/prism-es6/prism.js
 var _self = {};
 var Prism = function() {
@@ -2535,3 +2522,6 @@ var WCMarkdown = class extends HTMLElement {
   }
 };
 customElements.define("wc-markdown", WCMarkdown);
+export {
+  WCMarkdown
+};
