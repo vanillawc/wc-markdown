@@ -18,7 +18,9 @@
     "build": "npm run build:esm && npm run build:min",
     "build:esm": "esmtk commonjs src/wc-markdown.js index.js",
     "build:min": "esmtk minify src/wc-markdown.js index.min.js",
-    "copy": "cp -r node_modules/prism-es6/themes themes && cp -r node_modules/prism-es6/components components",
+    "copy": "npm run copy:themes && npm run copy:components",
+    "copy:themes": "cp -r node_modules/prism-es6/themes themes",
+    "copy:components": "cp -r node_modules/prism-es6/components components",
     "package": "npx rimraf package && npm pack | tail -n 1 | xargs tar -xf",
     "preversion": "npm run lint",
     "postversion": "git push --follow-tags"
