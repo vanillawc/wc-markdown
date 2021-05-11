@@ -1,589 +1,566 @@
-let __defineProperty = Object.defineProperty;
-let __hasOwnProperty = Object.prototype.hasOwnProperty;
-let __commonJS = (callback, module) => () => {
-  if (!module) {
-    module = {exports: {}};
-    callback(module.exports, module);
-  }
-  return module.exports;
-};
-let __markAsModule = (target) => {
-  return __defineProperty(target, "__esModule", {value: true});
-};
-let __export = (target, all) => {
-  __markAsModule(target);
-  for (let name in all)
-    __defineProperty(target, name, {get: all[name], enumerable: true});
-};
-let __exportStar = (target, module) => {
-  __markAsModule(target);
-  if (typeof module === "object" || typeof module === "function") {
-    for (let key in module)
-      if (__hasOwnProperty.call(module, key) && !__hasOwnProperty.call(target, key) && key !== "default")
-        __defineProperty(target, key, {get: () => module[key], enumerable: true});
-  }
-  return target;
-};
-let __toModule = (module) => {
-  if (module && module.__esModule)
-    return module;
-  return __exportStar(__defineProperty({}, "default", {value: module, enumerable: true}), module);
+var __defProp = Object.defineProperty;
+var __markAsModule = (target) => __defProp(target, "__esModule", {value: true});
+var __export = (target, all) => {
+  for (var name in all)
+    __defProp(target, name, {get: all[name], enumerable: true});
 };
 
-// node_modules/prism-es6/prism.js
-var require_prism = __commonJS((exports, module) => {
-  __export(exports, {
-    default: () => prism_default
-  });
-  let _self = {};
-  let Prism2 = function() {
-    let lang = /\blang(?:uage)?-([\w-]+)\b/i;
-    let uniqueId = 0;
-    var _ = _self.Prism = {
-      manual: _self.Prism && _self.Prism.manual,
-      disableWorkerMessageHandler: _self.Prism && _self.Prism.disableWorkerMessageHandler,
-      util: {
-        encode(tokens) {
-          if (tokens instanceof Token) {
-            return new Token(tokens.type, _.util.encode(tokens.content), tokens.alias);
-          } else if (_.util.type(tokens) === "Array") {
-            return tokens.map(_.util.encode);
-          } else {
-            return tokens.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\u00a0/g, " ");
-          }
-        },
-        type(o) {
-          return Object.prototype.toString.call(o).match(/\[object (\w+)\]/)[1];
-        },
-        objId(obj) {
-          if (!obj["__id"]) {
-            Object.defineProperty(obj, "__id", {value: ++uniqueId});
-          }
-          return obj["__id"];
-        },
-        clone(o, visited) {
-          var type = _.util.type(o);
-          visited = visited || {};
-          switch (type) {
-            case "Object":
-              if (visited[_.util.objId(o)]) {
-                return visited[_.util.objId(o)];
-              }
-              var clone = {};
-              visited[_.util.objId(o)] = clone;
-              for (var key in o) {
-                if (o.hasOwnProperty(key)) {
-                  clone[key] = _.util.clone(o[key], visited);
-                }
-              }
-              return clone;
-            case "Array":
-              if (visited[_.util.objId(o)]) {
-                return visited[_.util.objId(o)];
-              }
-              var clone = [];
-              visited[_.util.objId(o)] = clone;
-              o.forEach(function(v, i) {
-                clone[i] = _.util.clone(v, visited);
-              });
-              return clone;
-          }
-          return o;
-        }
-      },
-      languages: {
-        extend(id, redef) {
-          var lang2 = _.util.clone(_.languages[id]);
-          for (var key in redef) {
-            lang2[key] = redef[key];
-          }
-          return lang2;
-        },
-        insertBefore(inside, before, insert, root) {
-          root = root || _.languages;
-          var grammar = root[inside];
-          if (arguments.length == 2) {
-            insert = arguments[1];
-            for (var newToken in insert) {
-              if (insert.hasOwnProperty(newToken)) {
-                grammar[newToken] = insert[newToken];
-              }
-            }
-            return grammar;
-          }
-          var ret = {};
-          for (var token in grammar) {
-            if (grammar.hasOwnProperty(token)) {
-              if (token == before) {
-                for (var newToken in insert) {
-                  if (insert.hasOwnProperty(newToken)) {
-                    ret[newToken] = insert[newToken];
-                  }
-                }
-              }
-              ret[token] = grammar[token];
-            }
-          }
-          _.languages.DFS(_.languages, function(key, value) {
-            if (value === root[inside] && key != inside) {
-              this[key] = ret;
-            }
-          });
-          return root[inside] = ret;
-        },
-        DFS(o, callback, type, visited) {
-          visited = visited || {};
-          for (var i in o) {
-            if (o.hasOwnProperty(i)) {
-              callback.call(o, i, o[i], type || i);
-              if (_.util.type(o[i]) === "Object" && !visited[_.util.objId(o[i])]) {
-                visited[_.util.objId(o[i])] = true;
-                _.languages.DFS(o[i], callback, null, visited);
-              } else if (_.util.type(o[i]) === "Array" && !visited[_.util.objId(o[i])]) {
-                visited[_.util.objId(o[i])] = true;
-                _.languages.DFS(o[i], callback, i, visited);
-              }
-            }
-          }
-        }
-      },
-      plugins: {},
-      highlightAll(async, callback) {
-        _.highlightAllUnder(document, async, callback);
-      },
-      highlightAllUnder(container, async, callback) {
-        var env = {
-          callback,
-          selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'
-        };
-        _.hooks.run("before-highlightall", env);
-        var elements = env.elements || container.querySelectorAll(env.selector);
-        for (var i = 0, element; element = elements[i++]; ) {
-          _.highlightElement(element, async === true, env.callback);
-        }
-      },
-      highlightElement(element, async, callback) {
-        var language, grammar, parent = element;
-        while (parent && !lang.test(parent.className)) {
-          parent = parent.parentNode;
-        }
-        if (parent) {
-          language = (parent.className.match(lang) || [, ""])[1].toLowerCase();
-          grammar = _.languages[language];
-        }
-        element.className = element.className.replace(lang, "").replace(/\s+/g, " ") + " language-" + language;
-        if (element.parentNode) {
-          parent = element.parentNode;
-          if (/pre/i.test(parent.nodeName)) {
-            parent.className = parent.className.replace(lang, "").replace(/\s+/g, " ") + " language-" + language;
-          }
-        }
-        var code = element.textContent;
-        var env = {
-          element,
-          language,
-          grammar,
-          code
-        };
-        _.hooks.run("before-sanity-check", env);
-        if (!env.code || !env.grammar) {
-          if (env.code) {
-            _.hooks.run("before-highlight", env);
-            env.element.textContent = env.code;
-            _.hooks.run("after-highlight", env);
-          }
-          _.hooks.run("complete", env);
-          return;
-        }
-        _.hooks.run("before-highlight", env);
-        if (async && _self.Worker) {
-          var worker = new Worker(_.filename);
-          worker.onmessage = function(evt) {
-            env.highlightedCode = evt.data;
-            _.hooks.run("before-insert", env);
-            env.element.innerHTML = env.highlightedCode;
-            callback && callback.call(env.element);
-            _.hooks.run("after-highlight", env);
-            _.hooks.run("complete", env);
-          };
-          worker.postMessage(JSON.stringify({
-            language: env.language,
-            code: env.code,
-            immediateClose: true
-          }));
-        } else {
-          env.highlightedCode = _.highlight(env.code, env.grammar, env.language);
-          _.hooks.run("before-insert", env);
-          env.element.innerHTML = env.highlightedCode;
-          callback && callback.call(element);
-          _.hooks.run("after-highlight", env);
-          _.hooks.run("complete", env);
-        }
-      },
-      highlight(text, grammar, language) {
-        var env = {
-          code: text,
-          grammar,
-          language
-        };
-        _.hooks.run("before-tokenize", env);
-        env.tokens = _.tokenize(env.code, env.grammar);
-        _.hooks.run("after-tokenize", env);
-        return Token.stringify(_.util.encode(env.tokens), env.language);
-      },
-      matchGrammar(text, strarr, grammar, index, startPos, oneshot, target) {
-        var Token2 = _.Token;
-        for (var token in grammar) {
-          if (!grammar.hasOwnProperty(token) || !grammar[token]) {
-            continue;
-          }
-          if (token == target) {
-            return;
-          }
-          var patterns = grammar[token];
-          patterns = _.util.type(patterns) === "Array" ? patterns : [patterns];
-          for (var j = 0; j < patterns.length; ++j) {
-            var pattern = patterns[j], inside = pattern.inside, lookbehind = !!pattern.lookbehind, greedy = !!pattern.greedy, lookbehindLength = 0, alias = pattern.alias;
-            if (greedy && !pattern.pattern.global) {
-              var flags = pattern.pattern.toString().match(/[imuy]*$/)[0];
-              pattern.pattern = RegExp(pattern.pattern.source, flags + "g");
-            }
-            pattern = pattern.pattern || pattern;
-            for (var i = index, pos = startPos; i < strarr.length; pos += strarr[i].length, ++i) {
-              var str = strarr[i];
-              if (strarr.length > text.length) {
-                return;
-              }
-              if (str instanceof Token2) {
-                continue;
-              }
-              if (greedy && i != strarr.length - 1) {
-                pattern.lastIndex = pos;
-                var match = pattern.exec(text);
-                if (!match) {
-                  break;
-                }
-                var from = match.index + (lookbehind ? match[1].length : 0), to = match.index + match[0].length, k = i, p = pos;
-                for (var len = strarr.length; k < len && (p < to || !strarr[k].type && !strarr[k - 1].greedy); ++k) {
-                  p += strarr[k].length;
-                  if (from >= p) {
-                    ++i;
-                    pos = p;
-                  }
-                }
-                if (strarr[i] instanceof Token2) {
-                  continue;
-                }
-                delNum = k - i;
-                str = text.slice(pos, p);
-                match.index -= pos;
-              } else {
-                pattern.lastIndex = 0;
-                var match = pattern.exec(str), delNum = 1;
-              }
-              if (!match) {
-                if (oneshot) {
-                  break;
-                }
-                continue;
-              }
-              if (lookbehind) {
-                lookbehindLength = match[1] ? match[1].length : 0;
-              }
-              var from = match.index + lookbehindLength, match = match[0].slice(lookbehindLength), to = from + match.length, before = str.slice(0, from), after = str.slice(to);
-              var args = [i, delNum];
-              if (before) {
-                ++i;
-                pos += before.length;
-                args.push(before);
-              }
-              var wrapped = new Token2(token, inside ? _.tokenize(match, inside) : match, alias, match, greedy);
-              args.push(wrapped);
-              if (after) {
-                args.push(after);
-              }
-              Array.prototype.splice.apply(strarr, args);
-              if (delNum != 1)
-                _.matchGrammar(text, strarr, grammar, i, pos, true, token);
-              if (oneshot)
-                break;
-            }
-          }
-        }
-      },
-      tokenize(text, grammar, language) {
-        var strarr = [text];
-        var rest = grammar.rest;
-        if (rest) {
-          for (var token in rest) {
-            grammar[token] = rest[token];
-          }
-          delete grammar.rest;
-        }
-        _.matchGrammar(text, strarr, grammar, 0, 0, false);
-        return strarr;
-      },
-      hooks: {
-        all: {},
-        add(name, callback) {
-          var hooks = _.hooks.all;
-          hooks[name] = hooks[name] || [];
-          hooks[name].push(callback);
-        },
-        run(name, env) {
-          var callbacks = _.hooks.all[name];
-          if (!callbacks || !callbacks.length) {
-            return;
-          }
-          for (var i = 0, callback; callback = callbacks[i++]; ) {
-            callback(env);
-          }
-        }
-      }
-    };
-    var Token = _.Token = function(type, content, alias, matchedStr, greedy) {
-      this.type = type;
-      this.content = content;
-      this.alias = alias;
-      this.length = (matchedStr || "").length | 0;
-      this.greedy = !!greedy;
-    };
-    Token.stringify = function(o, language, parent) {
-      if (typeof o === "string") {
-        return o;
-      }
-      if (_.util.type(o) === "Array") {
-        return o.map((element) => {
-          return Token.stringify(element, language, o);
-        }).join("");
-      }
-      let env = {
-        type: o.type,
-        content: Token.stringify(o.content, language, parent),
-        tag: "span",
-        classes: ["token", o.type],
-        attributes: {},
-        language,
-        parent
-      };
-      if (o.alias) {
-        let aliases = _.util.type(o.alias) === "Array" ? o.alias : [o.alias];
-        Array.prototype.push.apply(env.classes, aliases);
-      }
-      _.hooks.run("wrap", env);
-      let attributes = Object.keys(env.attributes).map((name) => {
-        return name + '="' + (env.attributes[name] || "").replace(/"/g, "&quot;") + '"';
-      }).join(" ");
-      return `<${env.tag} class="${env.classes.join(" ")}"${attributes ? " " + attributes : ""}>${env.content}</${env.tag}>`;
-    };
-    if (!_self.document) {
-      if (!_self.addEventListener) {
-        return _self.Prism;
-      }
-      if (!_.disableWorkerMessageHandler) {
-        _self.addEventListener("message", (evt) => {
-          var message = JSON.parse(evt.data), lang2 = message.language, code = message.code, immediateClose = message.immediateClose;
-          _self.postMessage(_.highlight(code, _.languages[lang2], lang2));
-          if (immediateClose) {
-            _self.close();
-          }
-        }, false);
-      }
-      return _self.Prism;
-    }
-    return _self.Prism;
-  }();
-  if (typeof module !== "undefined" && module.exports) {
-    module.exports = Prism2;
-  }
-  if (typeof global !== "undefined") {
-    global.Prism = Prism2;
-  }
-  Prism2.languages.markup = {
-    comment: /<!--[\s\S]*?-->/,
-    prolog: /<\?[\s\S]+?\?>/,
-    doctype: /<!DOCTYPE[\s\S]+?>/i,
-    cdata: /<!\[CDATA\[[\s\S]*?]]>/i,
-    tag: {
-      pattern: /<\/?(?!\d)[^\s>\/=$<%]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+))?)*\s*\/?>/i,
-      greedy: true,
-      inside: {
-        tag: {
-          pattern: /^<\/?[^\s>\/]+/i,
-          inside: {
-            punctuation: /^<\/?/,
-            namespace: /^[^\s>\/:]+:/
-          }
-        },
-        "attr-value": {
-          pattern: /=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+)/i,
-          inside: {
-            punctuation: [
-              /^=/,
-              {
-                pattern: /(^|[^\\])["']/,
-                lookbehind: true
-              }
-            ]
-          }
-        },
-        punctuation: /\/?>/,
-        "attr-name": {
-          pattern: /[^\s>\/]+/,
-          inside: {
-            namespace: /^[^\s>\/:]+:/
-          }
-        }
-      }
-    },
-    entity: /&#?[\da-z]{1,8};/i
-  };
-  Prism2.languages.markup.tag.inside["attr-value"].inside.entity = Prism2.languages.markup.entity;
-  Prism2.hooks.add("wrap", (env) => {
-    if (env.type === "entity") {
-      env.attributes["title"] = env.content.replace(/&amp;/, "&");
-    }
-  });
-  Prism2.languages.xml = Prism2.languages.markup;
-  Prism2.languages.html = Prism2.languages.markup;
-  Prism2.languages.mathml = Prism2.languages.markup;
-  Prism2.languages.svg = Prism2.languages.markup;
-  Prism2.languages.css = {
-    comment: /\/\*[\s\S]*?\*\//,
-    atrule: {
-      pattern: /@[\w-]+?.*?(?:;|(?=\s*\{))/i,
-      inside: {
-        rule: /@[\w-]+/
-      }
-    },
-    url: /url\((?:(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1|.*?)\)/i,
-    selector: /[^{}\s][^{};]*?(?=\s*\{)/,
-    string: {
-      pattern: /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
-      greedy: true
-    },
-    property: /[-_a-z\xA0-\uFFFF][-\w\xA0-\uFFFF]*(?=\s*:)/i,
-    important: /\B!important\b/i,
-    function: /[-a-z0-9]+(?=\()/i,
-    punctuation: /[(){};:]/
-  };
-  Prism2.languages.css.atrule.inside.rest = Prism2.languages.css;
-  if (Prism2.languages.markup) {
-    Prism2.languages.insertBefore("markup", "tag", {
-      style: {
-        pattern: /(<style[\s\S]*?>)[\s\S]*?(?=<\/style>)/i,
-        lookbehind: true,
-        inside: Prism2.languages.css,
-        alias: "language-css",
-        greedy: true
-      }
-    });
-    Prism2.languages.insertBefore("inside", "attr-value", {
-      "style-attr": {
-        pattern: /\s*style=("|')(?:\\[\s\S]|(?!\1)[^\\])*\1/i,
-        inside: {
-          "attr-name": {
-            pattern: /^\s*style/i,
-            inside: Prism2.languages.markup.tag.inside
-          },
-          punctuation: /^\s*=\s*['"]|['"]\s*$/,
-          "attr-value": {
-            pattern: /.+/i,
-            inside: Prism2.languages.css
-          }
-        },
-        alias: "language-css"
-      }
-    }, Prism2.languages.markup.tag);
-  }
-  Prism2.languages.clike = {
-    comment: [
-      {
-        pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
-        lookbehind: true
-      },
-      {
-        pattern: /(^|[^\\:])\/\/.*/,
-        lookbehind: true,
-        greedy: true
-      }
-    ],
-    string: {
-      pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
-      greedy: true
-    },
-    "class-name": {
-      pattern: /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[\w.\\]+/i,
-      lookbehind: true,
-      inside: {
-        punctuation: /[.\\]/
-      }
-    },
-    keyword: /\b(?:if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
-    boolean: /\b(?:true|false)\b/,
-    function: /[a-z0-9_]+(?=\()/i,
-    number: /\b0x[\da-f]+\b|(?:\b\d+\.?\d*|\B\.\d+)(?:e[+-]?\d+)?/i,
-    operator: /--?|\+\+?|!=?=?|<=?|>=?|==?=?|&&?|\|\|?|\?|\*|\/|~|\^|%/,
-    punctuation: /[{}[\];(),.:]/
-  };
-  Prism2.languages.javascript = Prism2.languages.extend("clike", {
-    keyword: /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,
-    number: /\b(?:0[xX][\dA-Fa-f]+|0[bB][01]+|0[oO][0-7]+|NaN|Infinity)\b|(?:\b\d+\.?\d*|\B\.\d+)(?:[Ee][+-]?\d+)?/,
-    function: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*\()/i,
-    operator: /-[-=]?|\+[+=]?|!=?=?|<<?=?|>>?>?=?|=(?:==?|>)?|&[&=]?|\|[|=]?|\*\*?=?|\/=?|~|\^=?|%=?|\?|\.{3}/
-  });
-  Prism2.languages.insertBefore("javascript", "keyword", {
-    regex: {
-      pattern: /((?:^|[^$\w\xA0-\uFFFF."'\])\s])\s*)\/(\[[^\]\r\n]+]|\\.|[^/\\\[\r\n])+\/[gimyu]{0,5}(?=\s*($|[\r\n,.;})\]]))/,
-      lookbehind: true,
-      greedy: true
-    },
-    "function-variable": {
-      pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=\s*(?:function\b|(?:\([^()]*\)|[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/i,
-      alias: "function"
-    },
-    constant: /\b[A-Z][A-Z\d_]*\b/
-  });
-  Prism2.languages.insertBefore("javascript", "string", {
-    "template-string": {
-      pattern: /`(?:\\[\s\S]|\${[^}]+}|[^\\`])*`/,
-      greedy: true,
-      inside: {
-        interpolation: {
-          pattern: /\${[^}]+}/,
-          inside: {
-            "interpolation-punctuation": {
-              pattern: /^\${|}$/,
-              alias: "punctuation"
-            },
-            rest: null
-          }
-        },
-        string: /[\s\S]+/
-      }
-    }
-  });
-  Prism2.languages.javascript["template-string"].inside.interpolation.inside.rest = Prism2.languages.javascript;
-  if (Prism2.languages.markup) {
-    Prism2.languages.insertBefore("markup", "tag", {
-      script: {
-        pattern: /(<script[\s\S]*?>)[\s\S]*?(?=<\/script>)/i,
-        lookbehind: true,
-        inside: Prism2.languages.javascript,
-        alias: "language-javascript",
-        greedy: true
-      }
-    });
-  }
-  Prism2.languages.js = Prism2.languages.javascript;
-  const prism_default = Prism2;
+// src/wc-markdown.js
+__markAsModule(exports);
+__export(exports, {
+  WCMarkdown: () => WCMarkdown
 });
 
-// node_modules/marked/lib/marked.esm.js
-function createCommonjsModule(fn, module) {
-  return module = {exports: {}}, fn(module, module.exports), module.exports;
+// node_modules/prism-es6/prism.js
+var _self = {};
+var Prism = function() {
+  let lang = /\blang(?:uage)?-([\w-]+)\b/i;
+  let uniqueId = 0;
+  var _ = _self.Prism = {
+    manual: _self.Prism && _self.Prism.manual,
+    disableWorkerMessageHandler: _self.Prism && _self.Prism.disableWorkerMessageHandler,
+    util: {
+      encode(tokens) {
+        if (tokens instanceof Token) {
+          return new Token(tokens.type, _.util.encode(tokens.content), tokens.alias);
+        } else if (_.util.type(tokens) === "Array") {
+          return tokens.map(_.util.encode);
+        } else {
+          return tokens.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/\u00a0/g, " ");
+        }
+      },
+      type(o) {
+        return Object.prototype.toString.call(o).match(/\[object (\w+)\]/)[1];
+      },
+      objId(obj) {
+        if (!obj["__id"]) {
+          Object.defineProperty(obj, "__id", {value: ++uniqueId});
+        }
+        return obj["__id"];
+      },
+      clone(o, visited) {
+        var type = _.util.type(o);
+        visited = visited || {};
+        switch (type) {
+          case "Object":
+            if (visited[_.util.objId(o)]) {
+              return visited[_.util.objId(o)];
+            }
+            var clone = {};
+            visited[_.util.objId(o)] = clone;
+            for (var key in o) {
+              if (o.hasOwnProperty(key)) {
+                clone[key] = _.util.clone(o[key], visited);
+              }
+            }
+            return clone;
+          case "Array":
+            if (visited[_.util.objId(o)]) {
+              return visited[_.util.objId(o)];
+            }
+            var clone = [];
+            visited[_.util.objId(o)] = clone;
+            o.forEach(function(v, i) {
+              clone[i] = _.util.clone(v, visited);
+            });
+            return clone;
+        }
+        return o;
+      }
+    },
+    languages: {
+      extend(id, redef) {
+        var lang2 = _.util.clone(_.languages[id]);
+        for (var key in redef) {
+          lang2[key] = redef[key];
+        }
+        return lang2;
+      },
+      insertBefore(inside, before, insert, root) {
+        root = root || _.languages;
+        var grammar = root[inside];
+        if (arguments.length == 2) {
+          insert = arguments[1];
+          for (var newToken in insert) {
+            if (insert.hasOwnProperty(newToken)) {
+              grammar[newToken] = insert[newToken];
+            }
+          }
+          return grammar;
+        }
+        var ret = {};
+        for (var token in grammar) {
+          if (grammar.hasOwnProperty(token)) {
+            if (token == before) {
+              for (var newToken in insert) {
+                if (insert.hasOwnProperty(newToken)) {
+                  ret[newToken] = insert[newToken];
+                }
+              }
+            }
+            ret[token] = grammar[token];
+          }
+        }
+        _.languages.DFS(_.languages, function(key, value) {
+          if (value === root[inside] && key != inside) {
+            this[key] = ret;
+          }
+        });
+        return root[inside] = ret;
+      },
+      DFS(o, callback, type, visited) {
+        visited = visited || {};
+        for (var i in o) {
+          if (o.hasOwnProperty(i)) {
+            callback.call(o, i, o[i], type || i);
+            if (_.util.type(o[i]) === "Object" && !visited[_.util.objId(o[i])]) {
+              visited[_.util.objId(o[i])] = true;
+              _.languages.DFS(o[i], callback, null, visited);
+            } else if (_.util.type(o[i]) === "Array" && !visited[_.util.objId(o[i])]) {
+              visited[_.util.objId(o[i])] = true;
+              _.languages.DFS(o[i], callback, i, visited);
+            }
+          }
+        }
+      }
+    },
+    plugins: {},
+    highlightAll(async, callback) {
+      _.highlightAllUnder(document, async, callback);
+    },
+    highlightAllUnder(container, async, callback) {
+      var env = {
+        callback,
+        selector: 'code[class*="language-"], [class*="language-"] code, code[class*="lang-"], [class*="lang-"] code'
+      };
+      _.hooks.run("before-highlightall", env);
+      var elements = env.elements || container.querySelectorAll(env.selector);
+      for (var i = 0, element; element = elements[i++]; ) {
+        _.highlightElement(element, async === true, env.callback);
+      }
+    },
+    highlightElement(element, async, callback) {
+      var language, grammar, parent = element;
+      while (parent && !lang.test(parent.className)) {
+        parent = parent.parentNode;
+      }
+      if (parent) {
+        language = (parent.className.match(lang) || [, ""])[1].toLowerCase();
+        grammar = _.languages[language];
+      }
+      element.className = element.className.replace(lang, "").replace(/\s+/g, " ") + " language-" + language;
+      if (element.parentNode) {
+        parent = element.parentNode;
+        if (/pre/i.test(parent.nodeName)) {
+          parent.className = parent.className.replace(lang, "").replace(/\s+/g, " ") + " language-" + language;
+        }
+      }
+      var code = element.textContent;
+      var env = {
+        element,
+        language,
+        grammar,
+        code
+      };
+      _.hooks.run("before-sanity-check", env);
+      if (!env.code || !env.grammar) {
+        if (env.code) {
+          _.hooks.run("before-highlight", env);
+          env.element.textContent = env.code;
+          _.hooks.run("after-highlight", env);
+        }
+        _.hooks.run("complete", env);
+        return;
+      }
+      _.hooks.run("before-highlight", env);
+      if (async && _self.Worker) {
+        var worker = new Worker(_.filename);
+        worker.onmessage = function(evt) {
+          env.highlightedCode = evt.data;
+          _.hooks.run("before-insert", env);
+          env.element.innerHTML = env.highlightedCode;
+          callback && callback.call(env.element);
+          _.hooks.run("after-highlight", env);
+          _.hooks.run("complete", env);
+        };
+        worker.postMessage(JSON.stringify({
+          language: env.language,
+          code: env.code,
+          immediateClose: true
+        }));
+      } else {
+        env.highlightedCode = _.highlight(env.code, env.grammar, env.language);
+        _.hooks.run("before-insert", env);
+        env.element.innerHTML = env.highlightedCode;
+        callback && callback.call(element);
+        _.hooks.run("after-highlight", env);
+        _.hooks.run("complete", env);
+      }
+    },
+    highlight(text, grammar, language) {
+      var env = {
+        code: text,
+        grammar,
+        language
+      };
+      _.hooks.run("before-tokenize", env);
+      env.tokens = _.tokenize(env.code, env.grammar);
+      _.hooks.run("after-tokenize", env);
+      return Token.stringify(_.util.encode(env.tokens), env.language);
+    },
+    matchGrammar(text, strarr, grammar, index, startPos, oneshot, target) {
+      var Token2 = _.Token;
+      for (var token in grammar) {
+        if (!grammar.hasOwnProperty(token) || !grammar[token]) {
+          continue;
+        }
+        if (token == target) {
+          return;
+        }
+        var patterns = grammar[token];
+        patterns = _.util.type(patterns) === "Array" ? patterns : [patterns];
+        for (var j = 0; j < patterns.length; ++j) {
+          var pattern = patterns[j], inside = pattern.inside, lookbehind = !!pattern.lookbehind, greedy = !!pattern.greedy, lookbehindLength = 0, alias = pattern.alias;
+          if (greedy && !pattern.pattern.global) {
+            var flags = pattern.pattern.toString().match(/[imuy]*$/)[0];
+            pattern.pattern = RegExp(pattern.pattern.source, flags + "g");
+          }
+          pattern = pattern.pattern || pattern;
+          for (var i = index, pos = startPos; i < strarr.length; pos += strarr[i].length, ++i) {
+            var str = strarr[i];
+            if (strarr.length > text.length) {
+              return;
+            }
+            if (str instanceof Token2) {
+              continue;
+            }
+            if (greedy && i != strarr.length - 1) {
+              pattern.lastIndex = pos;
+              var match = pattern.exec(text);
+              if (!match) {
+                break;
+              }
+              var from = match.index + (lookbehind ? match[1].length : 0), to = match.index + match[0].length, k = i, p = pos;
+              for (var len = strarr.length; k < len && (p < to || !strarr[k].type && !strarr[k - 1].greedy); ++k) {
+                p += strarr[k].length;
+                if (from >= p) {
+                  ++i;
+                  pos = p;
+                }
+              }
+              if (strarr[i] instanceof Token2) {
+                continue;
+              }
+              delNum = k - i;
+              str = text.slice(pos, p);
+              match.index -= pos;
+            } else {
+              pattern.lastIndex = 0;
+              var match = pattern.exec(str), delNum = 1;
+            }
+            if (!match) {
+              if (oneshot) {
+                break;
+              }
+              continue;
+            }
+            if (lookbehind) {
+              lookbehindLength = match[1] ? match[1].length : 0;
+            }
+            var from = match.index + lookbehindLength, match = match[0].slice(lookbehindLength), to = from + match.length, before = str.slice(0, from), after = str.slice(to);
+            var args = [i, delNum];
+            if (before) {
+              ++i;
+              pos += before.length;
+              args.push(before);
+            }
+            var wrapped = new Token2(token, inside ? _.tokenize(match, inside) : match, alias, match, greedy);
+            args.push(wrapped);
+            if (after) {
+              args.push(after);
+            }
+            Array.prototype.splice.apply(strarr, args);
+            if (delNum != 1)
+              _.matchGrammar(text, strarr, grammar, i, pos, true, token);
+            if (oneshot)
+              break;
+          }
+        }
+      }
+    },
+    tokenize(text, grammar, language) {
+      var strarr = [text];
+      var rest = grammar.rest;
+      if (rest) {
+        for (var token in rest) {
+          grammar[token] = rest[token];
+        }
+        delete grammar.rest;
+      }
+      _.matchGrammar(text, strarr, grammar, 0, 0, false);
+      return strarr;
+    },
+    hooks: {
+      all: {},
+      add(name, callback) {
+        var hooks = _.hooks.all;
+        hooks[name] = hooks[name] || [];
+        hooks[name].push(callback);
+      },
+      run(name, env) {
+        var callbacks = _.hooks.all[name];
+        if (!callbacks || !callbacks.length) {
+          return;
+        }
+        for (var i = 0, callback; callback = callbacks[i++]; ) {
+          callback(env);
+        }
+      }
+    }
+  };
+  var Token = _.Token = function(type, content, alias, matchedStr, greedy) {
+    this.type = type;
+    this.content = content;
+    this.alias = alias;
+    this.length = (matchedStr || "").length | 0;
+    this.greedy = !!greedy;
+  };
+  Token.stringify = function(o, language, parent) {
+    if (typeof o === "string") {
+      return o;
+    }
+    if (_.util.type(o) === "Array") {
+      return o.map((element) => {
+        return Token.stringify(element, language, o);
+      }).join("");
+    }
+    let env = {
+      type: o.type,
+      content: Token.stringify(o.content, language, parent),
+      tag: "span",
+      classes: ["token", o.type],
+      attributes: {},
+      language,
+      parent
+    };
+    if (o.alias) {
+      let aliases = _.util.type(o.alias) === "Array" ? o.alias : [o.alias];
+      Array.prototype.push.apply(env.classes, aliases);
+    }
+    _.hooks.run("wrap", env);
+    let attributes = Object.keys(env.attributes).map((name) => {
+      return name + '="' + (env.attributes[name] || "").replace(/"/g, "&quot;") + '"';
+    }).join(" ");
+    return `<${env.tag} class="${env.classes.join(" ")}"${attributes ? " " + attributes : ""}>${env.content}</${env.tag}>`;
+  };
+  if (!_self.document) {
+    if (!_self.addEventListener) {
+      return _self.Prism;
+    }
+    if (!_.disableWorkerMessageHandler) {
+      _self.addEventListener("message", (evt) => {
+        var message = JSON.parse(evt.data), lang2 = message.language, code = message.code, immediateClose = message.immediateClose;
+        _self.postMessage(_.highlight(code, _.languages[lang2], lang2));
+        if (immediateClose) {
+          _self.close();
+        }
+      }, false);
+    }
+    return _self.Prism;
+  }
+  return _self.Prism;
+}();
+if (typeof module !== "undefined" && module.exports) {
+  module.exports = Prism;
 }
-var defaults = createCommonjsModule(function(module) {
+if (typeof global !== "undefined") {
+  global.Prism = Prism;
+}
+Prism.languages.markup = {
+  comment: /<!--[\s\S]*?-->/,
+  prolog: /<\?[\s\S]+?\?>/,
+  doctype: /<!DOCTYPE[\s\S]+?>/i,
+  cdata: /<!\[CDATA\[[\s\S]*?]]>/i,
+  tag: {
+    pattern: /<\/?(?!\d)[^\s>\/=$<%]+(?:\s+[^\s>\/=]+(?:=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+))?)*\s*\/?>/i,
+    greedy: true,
+    inside: {
+      tag: {
+        pattern: /^<\/?[^\s>\/]+/i,
+        inside: {
+          punctuation: /^<\/?/,
+          namespace: /^[^\s>\/:]+:/
+        }
+      },
+      "attr-value": {
+        pattern: /=(?:("|')(?:\\[\s\S]|(?!\1)[^\\])*\1|[^\s'">=]+)/i,
+        inside: {
+          punctuation: [
+            /^=/,
+            {
+              pattern: /(^|[^\\])["']/,
+              lookbehind: true
+            }
+          ]
+        }
+      },
+      punctuation: /\/?>/,
+      "attr-name": {
+        pattern: /[^\s>\/]+/,
+        inside: {
+          namespace: /^[^\s>\/:]+:/
+        }
+      }
+    }
+  },
+  entity: /&#?[\da-z]{1,8};/i
+};
+Prism.languages.markup.tag.inside["attr-value"].inside.entity = Prism.languages.markup.entity;
+Prism.hooks.add("wrap", (env) => {
+  if (env.type === "entity") {
+    env.attributes["title"] = env.content.replace(/&amp;/, "&");
+  }
+});
+Prism.languages.xml = Prism.languages.markup;
+Prism.languages.html = Prism.languages.markup;
+Prism.languages.mathml = Prism.languages.markup;
+Prism.languages.svg = Prism.languages.markup;
+Prism.languages.css = {
+  comment: /\/\*[\s\S]*?\*\//,
+  atrule: {
+    pattern: /@[\w-]+?.*?(?:;|(?=\s*\{))/i,
+    inside: {
+      rule: /@[\w-]+/
+    }
+  },
+  url: /url\((?:(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1|.*?)\)/i,
+  selector: /[^{}\s][^{};]*?(?=\s*\{)/,
+  string: {
+    pattern: /("|')(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+    greedy: true
+  },
+  property: /[-_a-z\xA0-\uFFFF][-\w\xA0-\uFFFF]*(?=\s*:)/i,
+  important: /\B!important\b/i,
+  function: /[-a-z0-9]+(?=\()/i,
+  punctuation: /[(){};:]/
+};
+Prism.languages.css.atrule.inside.rest = Prism.languages.css;
+if (Prism.languages.markup) {
+  Prism.languages.insertBefore("markup", "tag", {
+    style: {
+      pattern: /(<style[\s\S]*?>)[\s\S]*?(?=<\/style>)/i,
+      lookbehind: true,
+      inside: Prism.languages.css,
+      alias: "language-css",
+      greedy: true
+    }
+  });
+  Prism.languages.insertBefore("inside", "attr-value", {
+    "style-attr": {
+      pattern: /\s*style=("|')(?:\\[\s\S]|(?!\1)[^\\])*\1/i,
+      inside: {
+        "attr-name": {
+          pattern: /^\s*style/i,
+          inside: Prism.languages.markup.tag.inside
+        },
+        punctuation: /^\s*=\s*['"]|['"]\s*$/,
+        "attr-value": {
+          pattern: /.+/i,
+          inside: Prism.languages.css
+        }
+      },
+      alias: "language-css"
+    }
+  }, Prism.languages.markup.tag);
+}
+Prism.languages.clike = {
+  comment: [
+    {
+      pattern: /(^|[^\\])\/\*[\s\S]*?(?:\*\/|$)/,
+      lookbehind: true
+    },
+    {
+      pattern: /(^|[^\\:])\/\/.*/,
+      lookbehind: true,
+      greedy: true
+    }
+  ],
+  string: {
+    pattern: /(["'])(?:\\(?:\r\n|[\s\S])|(?!\1)[^\\\r\n])*\1/,
+    greedy: true
+  },
+  "class-name": {
+    pattern: /((?:\b(?:class|interface|extends|implements|trait|instanceof|new)\s+)|(?:catch\s+\())[\w.\\]+/i,
+    lookbehind: true,
+    inside: {
+      punctuation: /[.\\]/
+    }
+  },
+  keyword: /\b(?:if|else|while|do|for|return|in|instanceof|function|new|try|throw|catch|finally|null|break|continue)\b/,
+  boolean: /\b(?:true|false)\b/,
+  function: /[a-z0-9_]+(?=\()/i,
+  number: /\b0x[\da-f]+\b|(?:\b\d+\.?\d*|\B\.\d+)(?:e[+-]?\d+)?/i,
+  operator: /--?|\+\+?|!=?=?|<=?|>=?|==?=?|&&?|\|\|?|\?|\*|\/|~|\^|%/,
+  punctuation: /[{}[\];(),.:]/
+};
+Prism.languages.javascript = Prism.languages.extend("clike", {
+  keyword: /\b(?:as|async|await|break|case|catch|class|const|continue|debugger|default|delete|do|else|enum|export|extends|finally|for|from|function|get|if|implements|import|in|instanceof|interface|let|new|null|of|package|private|protected|public|return|set|static|super|switch|this|throw|try|typeof|var|void|while|with|yield)\b/,
+  number: /\b(?:0[xX][\dA-Fa-f]+|0[bB][01]+|0[oO][0-7]+|NaN|Infinity)\b|(?:\b\d+\.?\d*|\B\.\d+)(?:[Ee][+-]?\d+)?/,
+  function: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*\()/i,
+  operator: /-[-=]?|\+[+=]?|!=?=?|<<?=?|>>?>?=?|=(?:==?|>)?|&[&=]?|\|[|=]?|\*\*?=?|\/=?|~|\^=?|%=?|\?|\.{3}/
+});
+Prism.languages.insertBefore("javascript", "keyword", {
+  regex: {
+    pattern: /((?:^|[^$\w\xA0-\uFFFF."'\])\s])\s*)\/(\[[^\]\r\n]+]|\\.|[^/\\\[\r\n])+\/[gimyu]{0,5}(?=\s*($|[\r\n,.;})\]]))/,
+    lookbehind: true,
+    greedy: true
+  },
+  "function-variable": {
+    pattern: /[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*(?=\s*=\s*(?:function\b|(?:\([^()]*\)|[_$a-z\xA0-\uFFFF][$\w\xA0-\uFFFF]*)\s*=>))/i,
+    alias: "function"
+  },
+  constant: /\b[A-Z][A-Z\d_]*\b/
+});
+Prism.languages.insertBefore("javascript", "string", {
+  "template-string": {
+    pattern: /`(?:\\[\s\S]|\${[^}]+}|[^\\`])*`/,
+    greedy: true,
+    inside: {
+      interpolation: {
+        pattern: /\${[^}]+}/,
+        inside: {
+          "interpolation-punctuation": {
+            pattern: /^\${|}$/,
+            alias: "punctuation"
+          },
+          rest: null
+        }
+      },
+      string: /[\s\S]+/
+    }
+  }
+});
+Prism.languages.javascript["template-string"].inside.interpolation.inside.rest = Prism.languages.javascript;
+if (Prism.languages.markup) {
+  Prism.languages.insertBefore("markup", "tag", {
+    script: {
+      pattern: /(<script[\s\S]*?>)[\s\S]*?(?=<\/script>)/i,
+      lookbehind: true,
+      inside: Prism.languages.javascript,
+      alias: "language-javascript",
+      greedy: true
+    }
+  });
+}
+Prism.languages.js = Prism.languages.javascript;
+var prism_default = Prism;
+
+// node_modules/marked/lib/marked.esm.js
+function createCommonjsModule(fn) {
+  var module2 = {exports: {}};
+  return fn(module2, module2.exports), module2.exports;
+}
+var defaults$5 = createCommonjsModule(function(module2) {
   function getDefaults2() {
     return {
       baseUrl: null,
@@ -607,30 +584,27 @@ var defaults = createCommonjsModule(function(module) {
     };
   }
   function changeDefaults2(newDefaults) {
-    module.exports.defaults = newDefaults;
+    module2.exports.defaults = newDefaults;
   }
-  module.exports = {
+  module2.exports = {
     defaults: getDefaults2(),
     getDefaults: getDefaults2,
     changeDefaults: changeDefaults2
   };
 });
-var defaults_1 = defaults.defaults;
-var defaults_2 = defaults.getDefaults;
-var defaults_3 = defaults.changeDefaults;
-const escapeTest = /[&<>"']/;
-const escapeReplace = /[&<>"']/g;
-const escapeTestNoEncode = /[<>"']|&(?!#?\w+;)/;
-const escapeReplaceNoEncode = /[<>"']|&(?!#?\w+;)/g;
-const escapeReplacements = {
+var escapeTest = /[&<>"']/;
+var escapeReplace = /[&<>"']/g;
+var escapeTestNoEncode = /[<>"']|&(?!#?\w+;)/;
+var escapeReplaceNoEncode = /[<>"']|&(?!#?\w+;)/g;
+var escapeReplacements = {
   "&": "&amp;",
   "<": "&lt;",
   ">": "&gt;",
   '"': "&quot;",
   "'": "&#39;"
 };
-const getEscapeReplacement = (ch) => escapeReplacements[ch];
-function escape(html, encode) {
+var getEscapeReplacement = (ch) => escapeReplacements[ch];
+function escape$3(html, encode) {
   if (encode) {
     if (escapeTest.test(html)) {
       return html.replace(escapeReplace, getEscapeReplacement);
@@ -642,8 +616,8 @@ function escape(html, encode) {
   }
   return html;
 }
-const unescapeTest = /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig;
-function unescape(html) {
+var unescapeTest = /&(#(?:\d+)|(?:#x[0-9A-Fa-f]+)|(?:\w+));?/ig;
+function unescape$1(html) {
   return html.replace(unescapeTest, (_, n) => {
     n = n.toLowerCase();
     if (n === "colon")
@@ -654,8 +628,8 @@ function unescape(html) {
     return "";
   });
 }
-const caret = /(^|[^\[])\^/g;
-function edit(regex, opt) {
+var caret = /(^|[^\[])\^/g;
+function edit$1(regex, opt) {
   regex = regex.source || regex;
   opt = opt || "";
   const obj = {
@@ -671,13 +645,13 @@ function edit(regex, opt) {
   };
   return obj;
 }
-const nonWordAndColonTest = /[^\w:]/g;
-const originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
-function cleanUrl(sanitize, base, href) {
+var nonWordAndColonTest = /[^\w:]/g;
+var originIndependentUrl = /^$|^[a-z][a-z0-9+.-]*:|^[?#]/i;
+function cleanUrl$1(sanitize, base, href) {
   if (sanitize) {
     let prot;
     try {
-      prot = decodeURIComponent(unescape(href)).replace(nonWordAndColonTest, "").toLowerCase();
+      prot = decodeURIComponent(unescape$1(href)).replace(nonWordAndColonTest, "").toLowerCase();
     } catch (e) {
       return null;
     }
@@ -695,16 +669,16 @@ function cleanUrl(sanitize, base, href) {
   }
   return href;
 }
-const baseUrls = {};
-const justDomain = /^[^:]+:\/*[^/]*$/;
-const protocol = /^([^:]+:)[\s\S]*$/;
-const domain = /^([^:]+:\/*[^/]*)[\s\S]*$/;
+var baseUrls = {};
+var justDomain = /^[^:]+:\/*[^/]*$/;
+var protocol = /^([^:]+:)[\s\S]*$/;
+var domain = /^([^:]+:\/*[^/]*)[\s\S]*$/;
 function resolveUrl(base, href) {
   if (!baseUrls[" " + base]) {
     if (justDomain.test(base)) {
       baseUrls[" " + base] = base + "/";
     } else {
-      baseUrls[" " + base] = rtrim(base, "/", true);
+      baseUrls[" " + base] = rtrim$1(base, "/", true);
     }
   }
   base = baseUrls[" " + base];
@@ -723,9 +697,9 @@ function resolveUrl(base, href) {
     return base + href;
   }
 }
-const noopTest = {exec: function noopTest2() {
+var noopTest$1 = {exec: function noopTest() {
 }};
-function merge(obj) {
+function merge$2(obj) {
   let i = 1, target, key;
   for (; i < arguments.length; i++) {
     target = arguments[i];
@@ -737,7 +711,7 @@ function merge(obj) {
   }
   return obj;
 }
-function splitCells(tableRow, count) {
+function splitCells$1(tableRow, count) {
   const row = tableRow.replace(/\|/g, (match, offset, str) => {
     let escaped = false, curr = offset;
     while (--curr >= 0 && str[curr] === "\\")
@@ -760,7 +734,7 @@ function splitCells(tableRow, count) {
   }
   return cells;
 }
-function rtrim(str, c, invert) {
+function rtrim$1(str, c, invert) {
   const l = str.length;
   if (l === 0) {
     return "";
@@ -778,7 +752,7 @@ function rtrim(str, c, invert) {
   }
   return str.substr(0, l - suffLen);
 }
-function findClosingBracket(str, b) {
+function findClosingBracket$1(str, b) {
   if (str.indexOf(b[1]) === -1) {
     return -1;
   }
@@ -798,49 +772,65 @@ function findClosingBracket(str, b) {
   }
   return -1;
 }
-function checkSanitizeDeprecation(opt) {
+function checkSanitizeDeprecation$1(opt) {
   if (opt && opt.sanitize && !opt.silent) {
     console.warn("marked(): sanitize and sanitizer parameters are deprecated since version 0.7.0, should not be used and will be removed in the future. Read more here: https://marked.js.org/#/USING_ADVANCED.md#options");
   }
 }
+function repeatString$1(pattern, count) {
+  if (count < 1) {
+    return "";
+  }
+  let result = "";
+  while (count > 1) {
+    if (count & 1) {
+      result += pattern;
+    }
+    count >>= 1;
+    pattern += pattern;
+  }
+  return result + pattern;
+}
 var helpers = {
-  escape,
-  unescape,
-  edit,
-  cleanUrl,
+  escape: escape$3,
+  unescape: unescape$1,
+  edit: edit$1,
+  cleanUrl: cleanUrl$1,
   resolveUrl,
-  noopTest,
-  merge,
-  splitCells,
-  rtrim,
-  findClosingBracket,
-  checkSanitizeDeprecation
-};
-const {defaults: defaults$1} = defaults;
-const {
-  rtrim: rtrim$1,
+  noopTest: noopTest$1,
+  merge: merge$2,
   splitCells: splitCells$1,
-  escape: escape$1,
-  findClosingBracket: findClosingBracket$1
+  rtrim: rtrim$1,
+  findClosingBracket: findClosingBracket$1,
+  checkSanitizeDeprecation: checkSanitizeDeprecation$1,
+  repeatString: repeatString$1
+};
+var {defaults: defaults$4} = defaults$5;
+var {
+  rtrim,
+  splitCells,
+  escape: escape$2,
+  findClosingBracket
 } = helpers;
 function outputLink(cap, link, raw) {
   const href = link.href;
-  const title = link.title ? escape$1(link.title) : null;
+  const title = link.title ? escape$2(link.title) : null;
+  const text = cap[1].replace(/\\([\[\]])/g, "$1");
   if (cap[0].charAt(0) !== "!") {
     return {
       type: "link",
       raw,
       href,
       title,
-      text: cap[1]
+      text
     };
   } else {
     return {
       type: "image",
       raw,
-      text: escape$1(cap[1]),
       href,
-      title
+      title,
+      text: escape$2(text)
     };
   }
 }
@@ -864,7 +854,7 @@ function indentCodeCompensation(raw, text) {
 }
 var Tokenizer_1 = class Tokenizer {
   constructor(options) {
-    this.options = options || defaults$1;
+    this.options = options || defaults$4;
   }
   space(src) {
     const cap = this.rules.block.newline.exec(src);
@@ -878,22 +868,15 @@ var Tokenizer_1 = class Tokenizer {
       return {raw: "\n"};
     }
   }
-  code(src, tokens) {
+  code(src) {
     const cap = this.rules.block.code.exec(src);
     if (cap) {
-      const lastToken = tokens[tokens.length - 1];
-      if (lastToken && lastToken.type === "paragraph") {
-        return {
-          raw: cap[0],
-          text: cap[0].trimRight()
-        };
-      }
-      const text = cap[0].replace(/^ {4}/gm, "");
+      const text = cap[0].replace(/^ {1,4}/gm, "");
       return {
         type: "code",
         raw: cap[0],
         codeBlockStyle: "indented",
-        text: !this.options.pedantic ? rtrim$1(text, "\n") : text
+        text: !this.options.pedantic ? rtrim(text, "\n") : text
       };
     }
   }
@@ -913,11 +896,20 @@ var Tokenizer_1 = class Tokenizer {
   heading(src) {
     const cap = this.rules.block.heading.exec(src);
     if (cap) {
+      let text = cap[2].trim();
+      if (/#$/.test(text)) {
+        const trimmed = rtrim(text, "#");
+        if (this.options.pedantic) {
+          text = trimmed.trim();
+        } else if (!trimmed || / $/.test(trimmed)) {
+          text = trimmed.trim();
+        }
+      }
       return {
         type: "heading",
         raw: cap[0],
         depth: cap[1].length,
-        text: cap[2]
+        text
       };
     }
   }
@@ -926,7 +918,7 @@ var Tokenizer_1 = class Tokenizer {
     if (cap) {
       const item = {
         type: "table",
-        header: splitCells$1(cap[1].replace(/^ *| *\| *$/g, "")),
+        header: splitCells(cap[1].replace(/^ *| *\| *$/g, "")),
         align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
         cells: cap[3] ? cap[3].replace(/\n$/, "").split("\n") : [],
         raw: cap[0]
@@ -947,7 +939,7 @@ var Tokenizer_1 = class Tokenizer {
         }
         l = item.cells.length;
         for (i = 0; i < l; i++) {
-          item.cells[i] = splitCells$1(item.cells[i], item.header.length);
+          item.cells[i] = splitCells(item.cells[i], item.header.length);
         }
         return item;
       }
@@ -983,44 +975,67 @@ var Tokenizer_1 = class Tokenizer {
         type: "list",
         raw,
         ordered: isordered,
-        start: isordered ? +bull : "",
+        start: isordered ? +bull.slice(0, -1) : "",
         loose: false,
         items: []
       };
       const itemMatch = cap[0].match(this.rules.block.item);
-      let next = false, item, space, b, addBack, loose, istask, ischecked;
-      const l = itemMatch.length;
+      let next = false, item, space, bcurr, bnext, addBack, loose, istask, ischecked, endMatch;
+      let l = itemMatch.length;
+      bcurr = this.rules.block.listItemStart.exec(itemMatch[0]);
       for (let i = 0; i < l; i++) {
         item = itemMatch[i];
         raw = item;
+        if (!this.options.pedantic) {
+          endMatch = item.match(new RegExp("\\n\\s*\\n {0," + (bcurr[0].length - 1) + "}\\S"));
+          if (endMatch) {
+            addBack = item.length - endMatch.index + itemMatch.slice(i + 1).join("\n").length;
+            list.raw = list.raw.substring(0, list.raw.length - addBack);
+            item = item.substring(0, endMatch.index);
+            raw = item;
+            l = i + 1;
+          }
+        }
+        if (i !== l - 1) {
+          bnext = this.rules.block.listItemStart.exec(itemMatch[i + 1]);
+          if (!this.options.pedantic ? bnext[1].length >= bcurr[0].length || bnext[1].length > 3 : bnext[1].length > bcurr[1].length) {
+            itemMatch.splice(i, 2, itemMatch[i] + (!this.options.pedantic && bnext[1].length < bcurr[0].length && !itemMatch[i].match(/\n$/) ? "" : "\n") + itemMatch[i + 1]);
+            i--;
+            l--;
+            continue;
+          } else if (!this.options.pedantic || this.options.smartLists ? bnext[2][bnext[2].length - 1] !== bull[bull.length - 1] : isordered === (bnext[2].length === 1)) {
+            addBack = itemMatch.slice(i + 1).join("\n").length;
+            list.raw = list.raw.substring(0, list.raw.length - addBack);
+            i = l - 1;
+          }
+          bcurr = bnext;
+        }
         space = item.length;
-        item = item.replace(/^ *([*+-]|\d+\.) */, "");
+        item = item.replace(/^ *([*+-]|\d+[.)]) ?/, "");
         if (~item.indexOf("\n ")) {
           space -= item.length;
           item = !this.options.pedantic ? item.replace(new RegExp("^ {1," + space + "}", "gm"), "") : item.replace(/^ {1,4}/gm, "");
         }
+        item = rtrim(item, "\n");
         if (i !== l - 1) {
-          b = this.rules.block.bullet.exec(itemMatch[i + 1])[0];
-          if (bull.length > 1 ? b.length === 1 : b.length > 1 || this.options.smartLists && b !== bull) {
-            addBack = itemMatch.slice(i + 1).join("\n");
-            list.raw = list.raw.substring(0, list.raw.length - addBack.length);
-            i = l - 1;
-          }
+          raw = raw + "\n";
         }
-        loose = next || /\n\n(?!\s*$)/.test(item);
+        loose = next || /\n\n(?!\s*$)/.test(raw);
         if (i !== l - 1) {
-          next = item.charAt(item.length - 1) === "\n";
+          next = raw.slice(-2) === "\n\n";
           if (!loose)
             loose = next;
         }
         if (loose) {
           list.loose = true;
         }
-        istask = /^\[[ xX]\] /.test(item);
-        ischecked = void 0;
-        if (istask) {
-          ischecked = item[1] !== " ";
-          item = item.replace(/^\[[ xX]\] +/, "");
+        if (this.options.gfm) {
+          istask = /^\[[ xX]\] /.test(item);
+          ischecked = void 0;
+          if (istask) {
+            ischecked = item[1] !== " ";
+            item = item.replace(/^\[[ xX]\] +/, "");
+          }
         }
         list.items.push({
           type: "list_item",
@@ -1041,7 +1056,7 @@ var Tokenizer_1 = class Tokenizer {
         type: this.options.sanitize ? "paragraph" : "html",
         raw: cap[0],
         pre: !this.options.sanitizer && (cap[1] === "pre" || cap[1] === "script" || cap[1] === "style"),
-        text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$1(cap[0]) : cap[0]
+        text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0]
       };
     }
   }
@@ -1052,6 +1067,7 @@ var Tokenizer_1 = class Tokenizer {
         cap[3] = cap[3].substring(1, cap[3].length - 1);
       const tag = cap[1].toLowerCase().replace(/\s+/g, " ");
       return {
+        type: "def",
         tag,
         raw: cap[0],
         href: cap[2],
@@ -1064,7 +1080,7 @@ var Tokenizer_1 = class Tokenizer {
     if (cap) {
       const item = {
         type: "table",
-        header: splitCells$1(cap[1].replace(/^ *| *\| *$/g, "")),
+        header: splitCells(cap[1].replace(/^ *| *\| *$/g, "")),
         align: cap[2].replace(/^ *|\| *$/g, "").split(/ *\| */),
         cells: cap[3] ? cap[3].replace(/\n$/, "").split("\n") : []
       };
@@ -1085,7 +1101,7 @@ var Tokenizer_1 = class Tokenizer {
         }
         l = item.cells.length;
         for (i = 0; i < l; i++) {
-          item.cells[i] = splitCells$1(item.cells[i].replace(/^ *\| *| *\| *$/g, ""), item.header.length);
+          item.cells[i] = splitCells(item.cells[i].replace(/^ *\| *| *\| *$/g, ""), item.header.length);
         }
         return item;
       }
@@ -1112,16 +1128,9 @@ var Tokenizer_1 = class Tokenizer {
       };
     }
   }
-  text(src, tokens) {
+  text(src) {
     const cap = this.rules.block.text.exec(src);
     if (cap) {
-      const lastToken = tokens[tokens.length - 1];
-      if (lastToken && lastToken.type === "text") {
-        return {
-          raw: cap[0],
-          text: cap[0]
-        };
-      }
       return {
         type: "text",
         raw: cap[0],
@@ -1135,7 +1144,7 @@ var Tokenizer_1 = class Tokenizer {
       return {
         type: "escape",
         raw: cap[0],
-        text: escape$1(cap[1])
+        text: escape$2(cap[1])
       };
     }
   }
@@ -1157,20 +1166,31 @@ var Tokenizer_1 = class Tokenizer {
         raw: cap[0],
         inLink,
         inRawBlock,
-        text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$1(cap[0]) : cap[0]
+        text: this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0]
       };
     }
   }
   link(src) {
     const cap = this.rules.inline.link.exec(src);
     if (cap) {
-      const lastParenIndex = findClosingBracket$1(cap[2], "()");
-      if (lastParenIndex > -1) {
-        const start = cap[0].indexOf("!") === 0 ? 5 : 4;
-        const linkLen = start + cap[1].length + lastParenIndex;
-        cap[2] = cap[2].substring(0, lastParenIndex);
-        cap[0] = cap[0].substring(0, linkLen).trim();
-        cap[3] = "";
+      const trimmedUrl = cap[2].trim();
+      if (!this.options.pedantic && /^</.test(trimmedUrl)) {
+        if (!/>$/.test(trimmedUrl)) {
+          return;
+        }
+        const rtrimSlash = rtrim(trimmedUrl.slice(0, -1), "\\");
+        if ((trimmedUrl.length - rtrimSlash.length) % 2 === 0) {
+          return;
+        }
+      } else {
+        const lastParenIndex = findClosingBracket(cap[2], "()");
+        if (lastParenIndex > -1) {
+          const start = cap[0].indexOf("!") === 0 ? 5 : 4;
+          const linkLen = start + cap[1].length + lastParenIndex;
+          cap[2] = cap[2].substring(0, lastParenIndex);
+          cap[0] = cap[0].substring(0, linkLen).trim();
+          cap[3] = "";
+        }
       }
       let href = cap[2];
       let title = "";
@@ -1179,18 +1199,22 @@ var Tokenizer_1 = class Tokenizer {
         if (link) {
           href = link[1];
           title = link[3];
-        } else {
-          title = "";
         }
       } else {
         title = cap[3] ? cap[3].slice(1, -1) : "";
       }
-      href = href.trim().replace(/^<([\s\S]*)>$/, "$1");
-      const token = outputLink(cap, {
+      href = href.trim();
+      if (/^</.test(href)) {
+        if (this.options.pedantic && !/>$/.test(trimmedUrl)) {
+          href = href.slice(1);
+        } else {
+          href = href.slice(1, -1);
+        }
+      }
+      return outputLink(cap, {
         href: href ? href.replace(this.rules.inline._escapes, "$1") : href,
         title: title ? title.replace(this.rules.inline._escapes, "$1") : title
       }, cap[0]);
-      return token;
     }
   }
   reflink(src, links) {
@@ -1206,28 +1230,57 @@ var Tokenizer_1 = class Tokenizer {
           text
         };
       }
-      const token = outputLink(cap, link, cap[0]);
-      return token;
+      return outputLink(cap, link, cap[0]);
     }
   }
-  strong(src) {
-    const cap = this.rules.inline.strong.exec(src);
-    if (cap) {
-      return {
-        type: "strong",
-        raw: cap[0],
-        text: cap[4] || cap[3] || cap[2] || cap[1]
-      };
-    }
-  }
-  em(src) {
-    const cap = this.rules.inline.em.exec(src);
-    if (cap) {
-      return {
-        type: "em",
-        raw: cap[0],
-        text: cap[6] || cap[5] || cap[4] || cap[3] || cap[2] || cap[1]
-      };
+  emStrong(src, maskedSrc, prevChar = "") {
+    let match = this.rules.inline.emStrong.lDelim.exec(src);
+    if (!match)
+      return;
+    if (match[3] && prevChar.match(/[\p{L}\p{N}]/u))
+      return;
+    const nextChar = match[1] || match[2] || "";
+    if (!nextChar || nextChar && (prevChar === "" || this.rules.inline.punctuation.exec(prevChar))) {
+      const lLength = match[0].length - 1;
+      let rDelim, rLength, delimTotal = lLength, midDelimTotal = 0;
+      const endReg = match[0][0] === "*" ? this.rules.inline.emStrong.rDelimAst : this.rules.inline.emStrong.rDelimUnd;
+      endReg.lastIndex = 0;
+      maskedSrc = maskedSrc.slice(-1 * src.length + lLength);
+      while ((match = endReg.exec(maskedSrc)) != null) {
+        rDelim = match[1] || match[2] || match[3] || match[4] || match[5] || match[6];
+        if (!rDelim)
+          continue;
+        rLength = rDelim.length;
+        if (match[3] || match[4]) {
+          delimTotal += rLength;
+          continue;
+        } else if (match[5] || match[6]) {
+          if (lLength % 3 && !((lLength + rLength) % 3)) {
+            midDelimTotal += rLength;
+            continue;
+          }
+        }
+        delimTotal -= rLength;
+        if (delimTotal > 0)
+          continue;
+        if (delimTotal + midDelimTotal - rLength <= 0 && !maskedSrc.slice(endReg.lastIndex).match(endReg)) {
+          rLength = Math.min(rLength, rLength + delimTotal + midDelimTotal);
+        }
+        if (Math.min(lLength, rLength) % 2) {
+          return {
+            type: "em",
+            raw: src.slice(0, lLength + match.index + rLength + 1),
+            text: src.slice(1, lLength + match.index + rLength)
+          };
+        }
+        if (Math.min(lLength, rLength) % 2 === 0) {
+          return {
+            type: "strong",
+            raw: src.slice(0, lLength + match.index + rLength + 1),
+            text: src.slice(2, lLength + match.index + rLength - 1)
+          };
+        }
+      }
     }
   }
   codespan(src) {
@@ -1235,11 +1288,11 @@ var Tokenizer_1 = class Tokenizer {
     if (cap) {
       let text = cap[2].replace(/\n/g, " ");
       const hasNonSpaceChars = /[^ ]/.test(text);
-      const hasSpaceCharsOnBothEnds = text.startsWith(" ") && text.endsWith(" ");
+      const hasSpaceCharsOnBothEnds = /^ /.test(text) && / $/.test(text);
       if (hasNonSpaceChars && hasSpaceCharsOnBothEnds) {
         text = text.substring(1, text.length - 1);
       }
-      text = escape$1(text, true);
+      text = escape$2(text, true);
       return {
         type: "codespan",
         raw: cap[0],
@@ -1262,7 +1315,7 @@ var Tokenizer_1 = class Tokenizer {
       return {
         type: "del",
         raw: cap[0],
-        text: cap[1]
+        text: cap[2]
       };
     }
   }
@@ -1271,10 +1324,10 @@ var Tokenizer_1 = class Tokenizer {
     if (cap) {
       let text, href;
       if (cap[2] === "@") {
-        text = escape$1(this.options.mangle ? mangle2(cap[1]) : cap[1]);
+        text = escape$2(this.options.mangle ? mangle2(cap[1]) : cap[1]);
         href = "mailto:" + text;
       } else {
-        text = escape$1(cap[1]);
+        text = escape$2(cap[1]);
         href = text;
       }
       return {
@@ -1297,7 +1350,7 @@ var Tokenizer_1 = class Tokenizer {
     if (cap = this.rules.inline.url.exec(src)) {
       let text, href;
       if (cap[2] === "@") {
-        text = escape$1(this.options.mangle ? mangle2(cap[0]) : cap[0]);
+        text = escape$2(this.options.mangle ? mangle2(cap[0]) : cap[0]);
         href = "mailto:" + text;
       } else {
         let prevCapZero;
@@ -1305,7 +1358,7 @@ var Tokenizer_1 = class Tokenizer {
           prevCapZero = cap[0];
           cap[0] = this.rules.inline._backpedal.exec(cap[0])[0];
         } while (prevCapZero !== cap[0]);
-        text = escape$1(cap[0]);
+        text = escape$2(cap[0]);
         if (cap[1] === "www.") {
           href = "http://" + text;
         } else {
@@ -1332,9 +1385,9 @@ var Tokenizer_1 = class Tokenizer {
     if (cap) {
       let text;
       if (inRawBlock) {
-        text = this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$1(cap[0]) : cap[0];
+        text = this.options.sanitize ? this.options.sanitizer ? this.options.sanitizer(cap[0]) : escape$2(cap[0]) : cap[0];
       } else {
-        text = escape$1(this.options.smartypants ? smartypants2(cap[0]) : cap[0]);
+        text = escape$2(this.options.smartypants ? smartypants2(cap[0]) : cap[0]);
       }
       return {
         type: "text",
@@ -1344,109 +1397,133 @@ var Tokenizer_1 = class Tokenizer {
     }
   }
 };
-const {
-  noopTest: noopTest$1,
-  edit: edit$1,
+var {
+  noopTest: noopTest2,
+  edit,
   merge: merge$1
 } = helpers;
-const block = {
-  newline: /^\n+/,
-  code: /^( {4}[^\n]+\n*)+/,
+var block$1 = {
+  newline: /^(?: *(?:\n|$))+/,
+  code: /^( {4}[^\n]+(?:\n(?: *(?:\n|$))*)?)+/,
   fences: /^ {0,3}(`{3,}(?=[^`\n]*\n)|~{3,})([^\n]*)\n(?:|([\s\S]*?)\n)(?: {0,3}\1[~`]* *(?:\n+|$)|$)/,
   hr: /^ {0,3}((?:- *){3,}|(?:_ *){3,}|(?:\* *){3,})(?:\n+|$)/,
-  heading: /^ {0,3}(#{1,6}) +([^\n]*?)(?: +#+)? *(?:\n+|$)/,
+  heading: /^ {0,3}(#{1,6})(?=\s|$)(.*)(?:\n+|$)/,
   blockquote: /^( {0,3}> ?(paragraph|[^\n]*)(?:\n|$))+/,
-  list: /^( {0,3})(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?!\1bull )\n*|\s*$)/,
-  html: "^ {0,3}(?:<(script|pre|style)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?\\?>\\n*|<![A-Z][\\s\\S]*?>\\n*|<!\\[CDATA\\[[\\s\\S]*?\\]\\]>\\n*|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:\\n{2,}|$)|<(?!script|pre|style)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:\\n{2,}|$)|</(?!script|pre|style)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:\\n{2,}|$))",
+  list: /^( {0,3})(bull) [\s\S]+?(?:hr|def|\n{2,}(?! )(?! {0,3}bull )\n*|\s*$)/,
+  html: "^ {0,3}(?:<(script|pre|style)[\\s>][\\s\\S]*?(?:</\\1>[^\\n]*\\n+|$)|comment[^\\n]*(\\n+|$)|<\\?[\\s\\S]*?(?:\\?>\\n*|$)|<![A-Z][\\s\\S]*?(?:>\\n*|$)|<!\\[CDATA\\[[\\s\\S]*?(?:\\]\\]>\\n*|$)|</?(tag)(?: +|\\n|/?>)[\\s\\S]*?(?:\\n{2,}|$)|<(?!script|pre|style)([a-z][\\w-]*)(?:attribute)*? */?>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:\\n{2,}|$)|</(?!script|pre|style)[a-z][\\w-]*\\s*>(?=[ \\t]*(?:\\n|$))[\\s\\S]*?(?:\\n{2,}|$))",
   def: /^ {0,3}\[(label)\]: *\n? *<?([^\s>]+)>?(?:(?: +\n? *| *\n *)(title))? *(?:\n+|$)/,
-  nptable: noopTest$1,
-  table: noopTest$1,
+  nptable: noopTest2,
+  table: noopTest2,
   lheading: /^([^\n]+)\n {0,3}(=+|-+) *(?:\n+|$)/,
-  _paragraph: /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html)[^\n]+)*)/,
+  _paragraph: /^([^\n]+(?:\n(?!hr|heading|lheading|blockquote|fences|list|html| +\n)[^\n]+)*)/,
   text: /^[^\n]+/
 };
-block._label = /(?!\s*\])(?:\\[\[\]]|[^\[\]])+/;
-block._title = /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/;
-block.def = edit$1(block.def).replace("label", block._label).replace("title", block._title).getRegex();
-block.bullet = /(?:[*+-]|\d{1,9}\.)/;
-block.item = /^( *)(bull) ?[^\n]*(?:\n(?!\1bull ?)[^\n]*)*/;
-block.item = edit$1(block.item, "gm").replace(/bull/g, block.bullet).getRegex();
-block.list = edit$1(block.list).replace(/bull/g, block.bullet).replace("hr", "\\n+(?=\\1?(?:(?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$))").replace("def", "\\n+(?=" + block.def.source + ")").getRegex();
-block._tag = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul";
-block._comment = /<!--(?!-?>)[\s\S]*?-->/;
-block.html = edit$1(block.html, "i").replace("comment", block._comment).replace("tag", block._tag).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex();
-block.paragraph = edit$1(block._paragraph).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("|lheading", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|!--)").replace("tag", block._tag).getRegex();
-block.blockquote = edit$1(block.blockquote).replace("paragraph", block.paragraph).getRegex();
-block.normal = merge$1({}, block);
-block.gfm = merge$1({}, block.normal, {
-  nptable: "^ *([^|\\n ].*\\|.*)\\n *([-:]+ *\\|[-| :]*)(?:\\n((?:(?!\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)",
-  table: "^ *\\|(.+)\\n *\\|?( *[-:]+[-| :]*)(?:\\n *((?:(?!\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)"
+block$1._label = /(?!\s*\])(?:\\[\[\]]|[^\[\]])+/;
+block$1._title = /(?:"(?:\\"?|[^"\\])*"|'[^'\n]*(?:\n[^'\n]+)*\n?'|\([^()]*\))/;
+block$1.def = edit(block$1.def).replace("label", block$1._label).replace("title", block$1._title).getRegex();
+block$1.bullet = /(?:[*+-]|\d{1,9}[.)])/;
+block$1.item = /^( *)(bull) ?[^\n]*(?:\n(?! *bull ?)[^\n]*)*/;
+block$1.item = edit(block$1.item, "gm").replace(/bull/g, block$1.bullet).getRegex();
+block$1.listItemStart = edit(/^( *)(bull) */).replace("bull", block$1.bullet).getRegex();
+block$1.list = edit(block$1.list).replace(/bull/g, block$1.bullet).replace("hr", "\\n+(?=\\1?(?:(?:- *){3,}|(?:_ *){3,}|(?:\\* *){3,})(?:\\n+|$))").replace("def", "\\n+(?=" + block$1.def.source + ")").getRegex();
+block$1._tag = "address|article|aside|base|basefont|blockquote|body|caption|center|col|colgroup|dd|details|dialog|dir|div|dl|dt|fieldset|figcaption|figure|footer|form|frame|frameset|h[1-6]|head|header|hr|html|iframe|legend|li|link|main|menu|menuitem|meta|nav|noframes|ol|optgroup|option|p|param|section|source|summary|table|tbody|td|tfoot|th|thead|title|tr|track|ul";
+block$1._comment = /<!--(?!-?>)[\s\S]*?(?:-->|$)/;
+block$1.html = edit(block$1.html, "i").replace("comment", block$1._comment).replace("tag", block$1._tag).replace("attribute", / +[a-zA-Z:_][\w.:-]*(?: *= *"[^"\n]*"| *= *'[^'\n]*'| *= *[^\s"'=<>`]+)?/).getRegex();
+block$1.paragraph = edit(block$1._paragraph).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("|lheading", "").replace("blockquote", " {0,3}>").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|!--)").replace("tag", block$1._tag).getRegex();
+block$1.blockquote = edit(block$1.blockquote).replace("paragraph", block$1.paragraph).getRegex();
+block$1.normal = merge$1({}, block$1);
+block$1.gfm = merge$1({}, block$1.normal, {
+  nptable: "^ *([^|\\n ].*\\|.*)\\n {0,3}([-:]+ *\\|[-| :]*)(?:\\n((?:(?!\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)",
+  table: "^ *\\|(.+)\\n {0,3}\\|?( *[-:]+[-| :]*)(?:\\n *((?:(?!\\n|hr|heading|blockquote|code|fences|list|html).*(?:\\n|$))*)\\n*|$)"
 });
-block.gfm.nptable = edit$1(block.gfm.nptable).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|!--)").replace("tag", block._tag).getRegex();
-block.gfm.table = edit$1(block.gfm.table).replace("hr", block.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|!--)").replace("tag", block._tag).getRegex();
-block.pedantic = merge$1({}, block.normal, {
-  html: edit$1(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", block._comment).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),
+block$1.gfm.nptable = edit(block$1.gfm.nptable).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|!--)").replace("tag", block$1._tag).getRegex();
+block$1.gfm.table = edit(block$1.gfm.table).replace("hr", block$1.hr).replace("heading", " {0,3}#{1,6} ").replace("blockquote", " {0,3}>").replace("code", " {4}[^\\n]").replace("fences", " {0,3}(?:`{3,}(?=[^`\\n]*\\n)|~{3,})[^\\n]*\\n").replace("list", " {0,3}(?:[*+-]|1[.)]) ").replace("html", "</?(?:tag)(?: +|\\n|/?>)|<(?:script|pre|style|!--)").replace("tag", block$1._tag).getRegex();
+block$1.pedantic = merge$1({}, block$1.normal, {
+  html: edit(`^ *(?:comment *(?:\\n|\\s*$)|<(tag)[\\s\\S]+?</\\1> *(?:\\n{2,}|\\s*$)|<tag(?:"[^"]*"|'[^']*'|\\s[^'"/>\\s]*)*?/?> *(?:\\n{2,}|\\s*$))`).replace("comment", block$1._comment).replace(/tag/g, "(?!(?:a|em|strong|small|s|cite|q|dfn|abbr|data|time|code|var|samp|kbd|sub|sup|i|b|u|mark|ruby|rt|rp|bdi|bdo|span|br|wbr|ins|del|img)\\b)\\w+(?!:|[^\\w\\s@]*@)\\b").getRegex(),
   def: /^ *\[([^\]]+)\]: *<?([^\s>]+)>?(?: +(["(][^\n]+[")]))? *(?:\n+|$)/,
-  heading: /^ *(#{1,6}) *([^\n]+?) *(?:#+ *)?(?:\n+|$)/,
-  fences: noopTest$1,
-  paragraph: edit$1(block.normal._paragraph).replace("hr", block.hr).replace("heading", " *#{1,6} *[^\n]").replace("lheading", block.lheading).replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").getRegex()
+  heading: /^(#{1,6})(.*)(?:\n+|$)/,
+  fences: noopTest2,
+  paragraph: edit(block$1.normal._paragraph).replace("hr", block$1.hr).replace("heading", " *#{1,6} *[^\n]").replace("lheading", block$1.lheading).replace("blockquote", " {0,3}>").replace("|fences", "").replace("|list", "").replace("|html", "").getRegex()
 });
-const inline = {
+var inline$1 = {
   escape: /^\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/,
   autolink: /^<(scheme:[^\s\x00-\x1f<>]*|email)>/,
-  url: noopTest$1,
+  url: noopTest2,
   tag: "^comment|^</[a-zA-Z][\\w:-]*\\s*>|^<[a-zA-Z][\\w-]*(?:attribute)*?\\s*/?>|^<\\?[\\s\\S]*?\\?>|^<![a-zA-Z]+\\s[\\s\\S]*?>|^<!\\[CDATA\\[[\\s\\S]*?\\]\\]>",
   link: /^!?\[(label)\]\(\s*(href)(?:\s+(title))?\s*\)/,
   reflink: /^!?\[(label)\]\[(?!\s*\])((?:\\[\[\]]?|[^\[\]\\])+)\]/,
   nolink: /^!?\[(?!\s*\])((?:\[[^\[\]]*\]|\\[\[\]]|[^\[\]])*)\](?:\[\])?/,
-  strong: /^__([^\s_])__(?!_)|^\*\*([^\s*])\*\*(?!\*)|^__([^\s][\s\S]*?[^\s])__(?!_)|^\*\*([^\s][\s\S]*?[^\s])\*\*(?!\*)/,
-  em: /^_([^\s_])_(?!_)|^_([^\s_<][\s\S]*?[^\s_])_(?!_|[^\s,punctuation])|^_([^\s_<][\s\S]*?[^\s])_(?!_|[^\s,punctuation])|^\*([^\s*<\[])\*(?!\*)|^\*([^\s<"][\s\S]*?[^\s\[\*])\*(?![\]`punctuation])|^\*([^\s*"<\[][\s\S]*[^\s])\*(?!\*)/,
+  reflinkSearch: "reflink|nolink(?!\\()",
+  emStrong: {
+    lDelim: /^(?:\*+(?:([punct_])|[^\s*]))|^_+(?:([punct*])|([^\s_]))/,
+    rDelimAst: /\_\_[^_]*?\*[^_]*?\_\_|[punct_](\*+)(?=[\s]|$)|[^punct*_\s](\*+)(?=[punct_\s]|$)|[punct_\s](\*+)(?=[^punct*_\s])|[\s](\*+)(?=[punct_])|[punct_](\*+)(?=[punct_])|[^punct*_\s](\*+)(?=[^punct*_\s])/,
+    rDelimUnd: /\*\*[^*]*?\_[^*]*?\*\*|[punct*](\_+)(?=[\s]|$)|[^punct*_\s](\_+)(?=[punct*\s]|$)|[punct*\s](\_+)(?=[^punct*_\s])|[\s](\_+)(?=[punct*])|[punct*](\_+)(?=[punct*])/
+  },
   code: /^(`+)([^`]|[^`][\s\S]*?[^`])\1(?!`)/,
   br: /^( {2,}|\\)\n(?!\s*$)/,
-  del: noopTest$1,
-  text: /^(`+|[^`])(?:[\s\S]*?(?:(?=[\\<!\[`*]|\b_|$)|[^ ](?= {2,}\n))|(?= {2,}\n))/
+  del: noopTest2,
+  text: /^(`+|[^`])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*_]|\b_|$)|[^ ](?= {2,}\n)))/,
+  punctuation: /^([\spunctuation])/
 };
-inline._punctuation = `!"#$%&'()*+\\-./:;<=>?@\\[^_{|}~`;
-inline.em = edit$1(inline.em).replace(/punctuation/g, inline._punctuation).getRegex();
-inline._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
-inline._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
-inline._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
-inline.autolink = edit$1(inline.autolink).replace("scheme", inline._scheme).replace("email", inline._email).getRegex();
-inline._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
-inline.tag = edit$1(inline.tag).replace("comment", block._comment).replace("attribute", inline._attribute).getRegex();
-inline._label = /(?:\[[^\[\]]*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
-inline._href = /<(?:\\[<>]?|[^\s<>\\])*>|[^\s\x00-\x1f]*/;
-inline._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
-inline.link = edit$1(inline.link).replace("label", inline._label).replace("href", inline._href).replace("title", inline._title).getRegex();
-inline.reflink = edit$1(inline.reflink).replace("label", inline._label).getRegex();
-inline.normal = merge$1({}, inline);
-inline.pedantic = merge$1({}, inline.normal, {
-  strong: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
-  em: /^_(?=\S)([\s\S]*?\S)_(?!_)|^\*(?=\S)([\s\S]*?\S)\*(?!\*)/,
-  link: edit$1(/^!?\[(label)\]\((.*?)\)/).replace("label", inline._label).getRegex(),
-  reflink: edit$1(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", inline._label).getRegex()
+inline$1._punctuation = "!\"#$%&'()+\\-.,/:;<=>?@\\[\\]`^{|}~";
+inline$1.punctuation = edit(inline$1.punctuation).replace(/punctuation/g, inline$1._punctuation).getRegex();
+inline$1.blockSkip = /\[[^\]]*?\]\([^\)]*?\)|`[^`]*?`|<[^>]*?>/g;
+inline$1.escapedEmSt = /\\\*|\\_/g;
+inline$1._comment = edit(block$1._comment).replace("(?:-->|$)", "-->").getRegex();
+inline$1.emStrong.lDelim = edit(inline$1.emStrong.lDelim).replace(/punct/g, inline$1._punctuation).getRegex();
+inline$1.emStrong.rDelimAst = edit(inline$1.emStrong.rDelimAst, "g").replace(/punct/g, inline$1._punctuation).getRegex();
+inline$1.emStrong.rDelimUnd = edit(inline$1.emStrong.rDelimUnd, "g").replace(/punct/g, inline$1._punctuation).getRegex();
+inline$1._escapes = /\\([!"#$%&'()*+,\-./:;<=>?@\[\]\\^_`{|}~])/g;
+inline$1._scheme = /[a-zA-Z][a-zA-Z0-9+.-]{1,31}/;
+inline$1._email = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+(@)[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+(?![-_])/;
+inline$1.autolink = edit(inline$1.autolink).replace("scheme", inline$1._scheme).replace("email", inline$1._email).getRegex();
+inline$1._attribute = /\s+[a-zA-Z:_][\w.:-]*(?:\s*=\s*"[^"]*"|\s*=\s*'[^']*'|\s*=\s*[^\s"'=<>`]+)?/;
+inline$1.tag = edit(inline$1.tag).replace("comment", inline$1._comment).replace("attribute", inline$1._attribute).getRegex();
+inline$1._label = /(?:\[(?:\\.|[^\[\]\\])*\]|\\.|`[^`]*`|[^\[\]\\`])*?/;
+inline$1._href = /<(?:\\.|[^\n<>\\])+>|[^\s\x00-\x1f]*/;
+inline$1._title = /"(?:\\"?|[^"\\])*"|'(?:\\'?|[^'\\])*'|\((?:\\\)?|[^)\\])*\)/;
+inline$1.link = edit(inline$1.link).replace("label", inline$1._label).replace("href", inline$1._href).replace("title", inline$1._title).getRegex();
+inline$1.reflink = edit(inline$1.reflink).replace("label", inline$1._label).getRegex();
+inline$1.reflinkSearch = edit(inline$1.reflinkSearch, "g").replace("reflink", inline$1.reflink).replace("nolink", inline$1.nolink).getRegex();
+inline$1.normal = merge$1({}, inline$1);
+inline$1.pedantic = merge$1({}, inline$1.normal, {
+  strong: {
+    start: /^__|\*\*/,
+    middle: /^__(?=\S)([\s\S]*?\S)__(?!_)|^\*\*(?=\S)([\s\S]*?\S)\*\*(?!\*)/,
+    endAst: /\*\*(?!\*)/g,
+    endUnd: /__(?!_)/g
+  },
+  em: {
+    start: /^_|\*/,
+    middle: /^()\*(?=\S)([\s\S]*?\S)\*(?!\*)|^_(?=\S)([\s\S]*?\S)_(?!_)/,
+    endAst: /\*(?!\*)/g,
+    endUnd: /_(?!_)/g
+  },
+  link: edit(/^!?\[(label)\]\((.*?)\)/).replace("label", inline$1._label).getRegex(),
+  reflink: edit(/^!?\[(label)\]\s*\[([^\]]*)\]/).replace("label", inline$1._label).getRegex()
 });
-inline.gfm = merge$1({}, inline.normal, {
-  escape: edit$1(inline.escape).replace("])", "~|])").getRegex(),
+inline$1.gfm = merge$1({}, inline$1.normal, {
+  escape: edit(inline$1.escape).replace("])", "~|])").getRegex(),
   _extended_email: /[A-Za-z0-9._+-]+(@)[a-zA-Z0-9-_]+(?:\.[a-zA-Z0-9-_]*[a-zA-Z0-9])+(?![-_])/,
   url: /^((?:ftp|https?):\/\/|www\.)(?:[a-zA-Z0-9\-]+\.?)+[^\s<]*|^email/,
   _backpedal: /(?:[^?!.,:;*_~()&]+|\([^)]*\)|&(?![a-zA-Z0-9]+;$)|[?!.,:;*_~)]+(?!$))+/,
-  del: /^~+(?=\S)([\s\S]*?\S)~+/,
-  text: /^(`+|[^`])(?:[\s\S]*?(?:(?=[\\<!\[`*~]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))|(?= {2,}\n|[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))/
+  del: /^(~~?)(?=[^\s~])([\s\S]*?[^\s~])\1(?=[^~]|$)/,
+  text: /^([`~]+|[^`~])(?:(?= {2,}\n)|[\s\S]*?(?:(?=[\\<!\[`*~_]|\b_|https?:\/\/|ftp:\/\/|www\.|$)|[^ ](?= {2,}\n)|[^a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-](?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))|(?=[a-zA-Z0-9.!#$%&'*+\/=?_`{\|}~-]+@))/
 });
-inline.gfm.url = edit$1(inline.gfm.url, "i").replace("email", inline.gfm._extended_email).getRegex();
-inline.breaks = merge$1({}, inline.gfm, {
-  br: edit$1(inline.br).replace("{2,}", "*").getRegex(),
-  text: edit$1(inline.gfm.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex()
+inline$1.gfm.url = edit(inline$1.gfm.url, "i").replace("email", inline$1.gfm._extended_email).getRegex();
+inline$1.breaks = merge$1({}, inline$1.gfm, {
+  br: edit(inline$1.br).replace("{2,}", "*").getRegex(),
+  text: edit(inline$1.gfm.text).replace("\\b_", "\\b_| {2,}\\n").replace(/\{2,\}/g, "*").getRegex()
 });
 var rules = {
-  block,
-  inline
+  block: block$1,
+  inline: inline$1
 };
-const {defaults: defaults$2} = defaults;
-const {block: block$1, inline: inline$1} = rules;
+var {defaults: defaults$3} = defaults$5;
+var {block, inline} = rules;
+var {repeatString} = helpers;
 function smartypants(text) {
-  return text.replace(/---/g, "—").replace(/--/g, "–").replace(/(^|[-\u2014/(\[{"\s])'/g, "$1‘").replace(/'/g, "’").replace(/(^|[-\u2014/(\[{\u2018\s])"/g, "$1“").replace(/"/g, "”").replace(/\.{3}/g, "…");
+  return text.replace(/---/g, "\u2014").replace(/--/g, "\u2013").replace(/(^|[-\u2014/(\[{"\s])'/g, "$1\u2018").replace(/'/g, "\u2019").replace(/(^|[-\u2014/(\[{\u2018\s])"/g, "$1\u201C").replace(/"/g, "\u201D").replace(/\.{3}/g, "\u2026");
 }
 function mangle(text) {
   let out = "", i, ch;
@@ -1464,36 +1541,40 @@ var Lexer_1 = class Lexer {
   constructor(options) {
     this.tokens = [];
     this.tokens.links = Object.create(null);
-    this.options = options || defaults$2;
+    this.options = options || defaults$3;
     this.options.tokenizer = this.options.tokenizer || new Tokenizer_1();
     this.tokenizer = this.options.tokenizer;
     this.tokenizer.options = this.options;
     const rules2 = {
-      block: block$1.normal,
-      inline: inline$1.normal
+      block: block.normal,
+      inline: inline.normal
     };
     if (this.options.pedantic) {
-      rules2.block = block$1.pedantic;
-      rules2.inline = inline$1.pedantic;
+      rules2.block = block.pedantic;
+      rules2.inline = inline.pedantic;
     } else if (this.options.gfm) {
-      rules2.block = block$1.gfm;
+      rules2.block = block.gfm;
       if (this.options.breaks) {
-        rules2.inline = inline$1.breaks;
+        rules2.inline = inline.breaks;
       } else {
-        rules2.inline = inline$1.gfm;
+        rules2.inline = inline.gfm;
       }
     }
     this.tokenizer.rules = rules2;
   }
   static get rules() {
     return {
-      block: block$1,
-      inline: inline$1
+      block,
+      inline
     };
   }
   static lex(src, options) {
     const lexer = new Lexer(options);
     return lexer.lex(src);
+  }
+  static lexInline(src, options) {
+    const lexer = new Lexer(options);
+    return lexer.inlineTokens(src);
   }
   lex(src) {
     src = src.replace(/\r\n|\r/g, "\n").replace(/\t/g, "    ");
@@ -1502,7 +1583,9 @@ var Lexer_1 = class Lexer {
     return this.tokens;
   }
   blockTokens(src, tokens = [], top = true) {
-    src = src.replace(/^ +$/gm, "");
+    if (this.options.pedantic) {
+      src = src.replace(/^ +$/gm, "");
+    }
     let token, i, l, lastToken;
     while (src) {
       if (token = this.tokenizer.space(src)) {
@@ -1512,14 +1595,14 @@ var Lexer_1 = class Lexer {
         }
         continue;
       }
-      if (token = this.tokenizer.code(src, tokens)) {
+      if (token = this.tokenizer.code(src)) {
         src = src.substring(token.raw.length);
-        if (token.type) {
-          tokens.push(token);
-        } else {
-          lastToken = tokens[tokens.length - 1];
+        lastToken = tokens[tokens.length - 1];
+        if (lastToken && lastToken.type === "paragraph") {
           lastToken.raw += "\n" + token.raw;
           lastToken.text += "\n" + token.text;
+        } else {
+          tokens.push(token);
         }
         continue;
       }
@@ -1588,14 +1671,14 @@ var Lexer_1 = class Lexer {
         tokens.push(token);
         continue;
       }
-      if (token = this.tokenizer.text(src, tokens)) {
+      if (token = this.tokenizer.text(src)) {
         src = src.substring(token.raw.length);
-        if (token.type) {
-          tokens.push(token);
-        } else {
-          lastToken = tokens[tokens.length - 1];
+        lastToken = tokens[tokens.length - 1];
+        if (lastToken && lastToken.type === "text") {
           lastToken.raw += "\n" + token.raw;
           lastToken.text += "\n" + token.text;
+        } else {
+          tokens.push(token);
         }
         continue;
       }
@@ -1661,8 +1744,31 @@ var Lexer_1 = class Lexer {
     return tokens;
   }
   inlineTokens(src, tokens = [], inLink = false, inRawBlock = false) {
-    let token;
+    let token, lastToken;
+    let maskedSrc = src;
+    let match;
+    let keepPrevChar, prevChar;
+    if (this.tokens.links) {
+      const links = Object.keys(this.tokens.links);
+      if (links.length > 0) {
+        while ((match = this.tokenizer.rules.inline.reflinkSearch.exec(maskedSrc)) != null) {
+          if (links.includes(match[0].slice(match[0].lastIndexOf("[") + 1, -1))) {
+            maskedSrc = maskedSrc.slice(0, match.index) + "[" + repeatString("a", match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.reflinkSearch.lastIndex);
+          }
+        }
+      }
+    }
+    while ((match = this.tokenizer.rules.inline.blockSkip.exec(maskedSrc)) != null) {
+      maskedSrc = maskedSrc.slice(0, match.index) + "[" + repeatString("a", match[0].length - 2) + "]" + maskedSrc.slice(this.tokenizer.rules.inline.blockSkip.lastIndex);
+    }
+    while ((match = this.tokenizer.rules.inline.escapedEmSt.exec(maskedSrc)) != null) {
+      maskedSrc = maskedSrc.slice(0, match.index) + "++" + maskedSrc.slice(this.tokenizer.rules.inline.escapedEmSt.lastIndex);
+    }
     while (src) {
+      if (!keepPrevChar) {
+        prevChar = "";
+      }
+      keepPrevChar = false;
       if (token = this.tokenizer.escape(src)) {
         src = src.substring(token.raw.length);
         tokens.push(token);
@@ -1672,7 +1778,13 @@ var Lexer_1 = class Lexer {
         src = src.substring(token.raw.length);
         inLink = token.inLink;
         inRawBlock = token.inRawBlock;
-        tokens.push(token);
+        const lastToken2 = tokens[tokens.length - 1];
+        if (lastToken2 && token.type === "text" && lastToken2.type === "text") {
+          lastToken2.raw += token.raw;
+          lastToken2.text += token.text;
+        } else {
+          tokens.push(token);
+        }
         continue;
       }
       if (token = this.tokenizer.link(src)) {
@@ -1685,19 +1797,19 @@ var Lexer_1 = class Lexer {
       }
       if (token = this.tokenizer.reflink(src, this.tokens.links)) {
         src = src.substring(token.raw.length);
+        const lastToken2 = tokens[tokens.length - 1];
         if (token.type === "link") {
           token.tokens = this.inlineTokens(token.text, [], true, inRawBlock);
+          tokens.push(token);
+        } else if (lastToken2 && token.type === "text" && lastToken2.type === "text") {
+          lastToken2.raw += token.raw;
+          lastToken2.text += token.text;
+        } else {
+          tokens.push(token);
         }
-        tokens.push(token);
         continue;
       }
-      if (token = this.tokenizer.strong(src)) {
-        src = src.substring(token.raw.length);
-        token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
-        tokens.push(token);
-        continue;
-      }
-      if (token = this.tokenizer.em(src)) {
+      if (token = this.tokenizer.emStrong(src, maskedSrc, prevChar)) {
         src = src.substring(token.raw.length);
         token.tokens = this.inlineTokens(token.text, [], inLink, inRawBlock);
         tokens.push(token);
@@ -1731,7 +1843,17 @@ var Lexer_1 = class Lexer {
       }
       if (token = this.tokenizer.inlineText(src, inRawBlock, smartypants)) {
         src = src.substring(token.raw.length);
-        tokens.push(token);
+        if (token.raw.slice(-1) !== "_") {
+          prevChar = token.raw.slice(-1);
+        }
+        keepPrevChar = true;
+        lastToken = tokens[tokens.length - 1];
+        if (lastToken && lastToken.type === "text") {
+          lastToken.raw += token.raw;
+          lastToken.text += token.text;
+        } else {
+          tokens.push(token);
+        }
         continue;
       }
       if (src) {
@@ -1747,14 +1869,14 @@ var Lexer_1 = class Lexer {
     return tokens;
   }
 };
-const {defaults: defaults$3} = defaults;
-const {
-  cleanUrl: cleanUrl$1,
-  escape: escape$2
+var {defaults: defaults$2} = defaults$5;
+var {
+  cleanUrl,
+  escape: escape$1
 } = helpers;
 var Renderer_1 = class Renderer {
   constructor(options) {
-    this.options = options || defaults$3;
+    this.options = options || defaults$2;
   }
   code(code, infostring, escaped) {
     const lang = (infostring || "").match(/\S*/)[0];
@@ -1765,10 +1887,11 @@ var Renderer_1 = class Renderer {
         code = out;
       }
     }
+    code = code.replace(/\n$/, "") + "\n";
     if (!lang) {
-      return "<pre><code>" + (escaped ? code : escape$2(code, true)) + "</code></pre>\n";
+      return "<pre><code>" + (escaped ? code : escape$1(code, true)) + "</code></pre>\n";
     }
-    return '<pre><code class="' + this.options.langPrefix + escape$2(lang, true) + '">' + (escaped ? code : escape$2(code, true)) + "</code></pre>\n";
+    return '<pre><code class="' + this.options.langPrefix + escape$1(lang, true) + '">' + (escaped ? code : escape$1(code, true)) + "</code></pre>\n";
   }
   blockquote(quote) {
     return "<blockquote>\n" + quote + "</blockquote>\n";
@@ -1827,11 +1950,11 @@ var Renderer_1 = class Renderer {
     return "<del>" + text + "</del>";
   }
   link(href, title, text) {
-    href = cleanUrl$1(this.options.sanitize, this.options.baseUrl, href);
+    href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
     if (href === null) {
       return text;
     }
-    let out = '<a href="' + escape$2(href) + '"';
+    let out = '<a href="' + escape$1(href) + '"';
     if (title) {
       out += ' title="' + title + '"';
     }
@@ -1839,7 +1962,7 @@ var Renderer_1 = class Renderer {
     return out;
   }
   image(href, title, text) {
-    href = cleanUrl$1(this.options.sanitize, this.options.baseUrl, href);
+    href = cleanUrl(this.options.sanitize, this.options.baseUrl, href);
     if (href === null) {
       return text;
     }
@@ -1887,26 +2010,37 @@ var Slugger_1 = class Slugger {
   constructor() {
     this.seen = {};
   }
-  slug(value) {
-    let slug = value.toLowerCase().trim().replace(/<[!\/a-z].*?>/ig, "").replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, "").replace(/\s/g, "-");
+  serialize(value) {
+    return value.toLowerCase().trim().replace(/<[!\/a-z].*?>/ig, "").replace(/[\u2000-\u206F\u2E00-\u2E7F\\'!"#$%&()*+,./:;<=>?@[\]^`{|}~]/g, "").replace(/\s/g, "-");
+  }
+  getNextSafeSlug(originalSlug, isDryRun) {
+    let slug = originalSlug;
+    let occurenceAccumulator = 0;
     if (this.seen.hasOwnProperty(slug)) {
-      const originalSlug = slug;
+      occurenceAccumulator = this.seen[originalSlug];
       do {
-        this.seen[originalSlug]++;
-        slug = originalSlug + "-" + this.seen[originalSlug];
+        occurenceAccumulator++;
+        slug = originalSlug + "-" + occurenceAccumulator;
       } while (this.seen.hasOwnProperty(slug));
     }
-    this.seen[slug] = 0;
+    if (!isDryRun) {
+      this.seen[originalSlug] = occurenceAccumulator;
+      this.seen[slug] = 0;
+    }
     return slug;
   }
+  slug(value, options = {}) {
+    const slug = this.serialize(value);
+    return this.getNextSafeSlug(slug, options.dryrun);
+  }
 };
-const {defaults: defaults$4} = defaults;
-const {
-  unescape: unescape$1
+var {defaults: defaults$1} = defaults$5;
+var {
+  unescape
 } = helpers;
 var Parser_1 = class Parser {
   constructor(options) {
-    this.options = options || defaults$4;
+    this.options = options || defaults$1;
     this.options.renderer = this.options.renderer || new Renderer_1();
     this.renderer = this.options.renderer;
     this.renderer.options = this.options;
@@ -1916,6 +2050,10 @@ var Parser_1 = class Parser {
   static parse(tokens, options) {
     const parser = new Parser(options);
     return parser.parse(tokens);
+  }
+  static parseInline(tokens, options) {
+    const parser = new Parser(options);
+    return parser.parseInline(tokens);
   }
   parse(tokens, top = true) {
     let out = "", i, j, k, l2, l3, row, cell, header, body, token, ordered, start, loose, itemBody, item, checked, task, checkbox;
@@ -1931,7 +2069,7 @@ var Parser_1 = class Parser {
           continue;
         }
         case "heading": {
-          out += this.renderer.heading(this.parseInline(token.tokens), token.depth, unescape$1(this.parseInline(token.tokens, this.textRenderer)), this.slugger);
+          out += this.renderer.heading(this.parseInline(token.tokens), token.depth, unescape(this.parseInline(token.tokens, this.textRenderer)), this.slugger);
           continue;
         }
         case "code": {
@@ -2091,16 +2229,16 @@ var Parser_1 = class Parser {
     return out;
   }
 };
-const {
-  merge: merge$2,
-  checkSanitizeDeprecation: checkSanitizeDeprecation$1,
-  escape: escape$3
+var {
+  merge,
+  checkSanitizeDeprecation,
+  escape
 } = helpers;
-const {
+var {
   getDefaults,
   changeDefaults,
-  defaults: defaults$5
-} = defaults;
+  defaults
+} = defaults$5;
 function marked(src, opt, callback) {
   if (typeof src === "undefined" || src === null) {
     throw new Error("marked(): input parameter is undefined or null");
@@ -2112,8 +2250,8 @@ function marked(src, opt, callback) {
     callback = opt;
     opt = null;
   }
-  opt = merge$2({}, marked.defaults, opt || {});
-  checkSanitizeDeprecation$1(opt);
+  opt = merge({}, marked.defaults, opt || {});
+  checkSanitizeDeprecation(opt);
   if (callback) {
     const highlight = opt.highlight;
     let tokens;
@@ -2144,19 +2282,21 @@ function marked(src, opt, callback) {
     marked.walkTokens(tokens, function(token) {
       if (token.type === "code") {
         pending++;
-        highlight(token.text, token.lang, function(err, code) {
-          if (err) {
-            return done(err);
-          }
-          if (code != null && code !== token.text) {
-            token.text = code;
-            token.escaped = true;
-          }
-          pending--;
-          if (pending === 0) {
-            done();
-          }
-        });
+        setTimeout(() => {
+          highlight(token.text, token.lang, function(err, code) {
+            if (err) {
+              return done(err);
+            }
+            if (code != null && code !== token.text) {
+              token.text = code;
+              token.escaped = true;
+            }
+            pending--;
+            if (pending === 0) {
+              done();
+            }
+          });
+        }, 0);
       }
     });
     if (pending === 0) {
@@ -2173,20 +2313,20 @@ function marked(src, opt, callback) {
   } catch (e) {
     e.message += "\nPlease report this to https://github.com/markedjs/marked.";
     if (opt.silent) {
-      return "<p>An error occurred:</p><pre>" + escape$3(e.message + "", true) + "</pre>";
+      return "<p>An error occurred:</p><pre>" + escape(e.message + "", true) + "</pre>";
     }
     throw e;
   }
 }
 marked.options = marked.setOptions = function(opt) {
-  merge$2(marked.defaults, opt);
+  merge(marked.defaults, opt);
   changeDefaults(marked.defaults);
   return marked;
 };
 marked.getDefaults = getDefaults;
-marked.defaults = defaults$5;
+marked.defaults = defaults;
 marked.use = function(extension) {
-  const opts = merge$2({}, extension);
+  const opts = merge({}, extension);
   if (extension.renderer) {
     const renderer = marked.defaults.renderer || new Renderer_1();
     for (const prop in extension.renderer) {
@@ -2253,6 +2393,29 @@ marked.walkTokens = function(tokens, callback) {
     }
   }
 };
+marked.parseInline = function(src, opt) {
+  if (typeof src === "undefined" || src === null) {
+    throw new Error("marked.parseInline(): input parameter is undefined or null");
+  }
+  if (typeof src !== "string") {
+    throw new Error("marked.parseInline(): input parameter is of type " + Object.prototype.toString.call(src) + ", string expected");
+  }
+  opt = merge({}, marked.defaults, opt || {});
+  checkSanitizeDeprecation(opt);
+  try {
+    const tokens = Lexer_1.lexInline(src, opt);
+    if (opt.walkTokens) {
+      marked.walkTokens(tokens, opt.walkTokens);
+    }
+    return Parser_1.parseInline(tokens, opt);
+  } catch (e) {
+    e.message += "\nPlease report this to https://github.com/markedjs/marked.";
+    if (opt.silent) {
+      return "<p>An error occurred:</p><pre>" + escape(e.message + "", true) + "</pre>";
+    }
+    throw e;
+  }
+};
 marked.Parser = Parser_1;
 marked.parser = Parser_1.parse;
 marked.Renderer = Renderer_1;
@@ -2263,12 +2426,11 @@ marked.Tokenizer = Tokenizer_1;
 marked.Slugger = Slugger_1;
 marked.parse = marked;
 var marked_1 = marked;
-const marked_esm_default = marked_1;
+var marked_esm_default = marked_1;
 
 // src/wc-markdown.js
-const prism = __toModule(require_prism());
-self.Prism = prism.default;
-class WCMarkdown extends HTMLElement {
+self.Prism = prism_default;
+var WCMarkdown = class extends HTMLElement {
   static get observedAttributes() {
     return ["src"];
   }
@@ -2338,7 +2500,7 @@ class WCMarkdown extends HTMLElement {
     return marked_esm_default(markdown);
   }
   static highlight(element) {
-    prism.default.highlightAllUnder(element);
+    prism_default.highlightAllUnder(element);
   }
   static dedentText(text) {
     const lines = text.split("\n");
@@ -2371,8 +2533,5 @@ class WCMarkdown extends HTMLElement {
       fixedLines.splice(fixedLines.length - 1, 1);
     return fixedLines.join("\n");
   }
-}
-customElements.define("wc-markdown", WCMarkdown);
-export {
-  WCMarkdown
 };
+customElements.define("wc-markdown", WCMarkdown);
