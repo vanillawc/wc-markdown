@@ -11,21 +11,22 @@
   <a href="https://www.webcomponents.org/element/@vanillawc/wc-markdown"><img src="https://img.shields.io/badge/webcomponents.org-published-blue.svg" alt="Published on WebComponents.org"></a>
 </div>
 
-## Installation
+## Setup
 
-*Installation*
+*Install and import from [NPM](https://www.npmjs.com/package/@vanillawc/wc-markdown)*
+
 ```sh
 npm i @vanillawc/wc-markdown
 ```
 
-*Import from NPM*
 ```html
-<script type="module" src="node_modules/@vanillawc/wc-markdown/index.js"></script>
+<script type="module" src="[node_modules]/@vanillawc/wc-markdown/index.js"></script>
 ```
 
-*Import from CDN*
+*Import from [SkyPack CDN](https://www.skypack.dev/view/@vanillawc/wc-markdown)*
+
 ```html
-<script type="module" src="https://cdn.jsdelivr.net/gh/vanillawc/wc-markdown@1/index.js"></script>
+<script type="module" src="https://cdn.skypack.dev/@vanillawc/wc-markdown"></script>
 ```
 
 ## Demo
