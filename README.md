@@ -100,3 +100,7 @@ Some languages extend others. Ex, `C++` extends `C` so both need to be imported 
 ## Contributing
 
 See [CONTRIBUTING.md](https://github.com/vanillawc/vanillawc/blob/main/CONTRIBUTING.md)
+
+## Similar Projects
+
+- [`<zero-md>` - Ridiculously simple zero-config markdown displayer](https://github.com/zerodevx/zero-md)
