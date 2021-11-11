@@ -20,14 +20,14 @@
     "build:min": "esmtk minify src/wc-markdown.js index.min.js",
     "copy": "npm run copy:themes && npm run copy:components",
     "copy:themes": "cp -r node_modules/prism-es6/themes themes",
-    "copy:components": "cp -r node_modules/prism-es6/components components",
+    "copy:components": "cp -r node_modules/prism-es6/components .",
     "package": "npx rimraf package && npm pack | tail -n 1 | xargs tar -xf",
     "preversion": "npm run lint",
     "postversion": "git push --follow-tags"
   },
   "devDependencies": {
     "esmtk": "^0.5.6",
-    "marked": "^2.0.3",
+    "marked": "^4.0.1",
     "prism-es6": "^1.2.0"
   },
   "standard": {

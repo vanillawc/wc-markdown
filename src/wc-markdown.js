@@ -1,6 +1,6 @@
 /* eslint no-undef: 0 */
 import Prism from '../node_modules/prism-es6/prism.js'
-import Marked from '../node_modules/marked/lib/marked.esm.js'
+import { marked } from '../node_modules/marked/lib/marked.esm.js'
 
 self.Prism = Prism
 
@@ -80,7 +80,7 @@ export class WCMarkdown extends HTMLElement {
   }
 
   static toHtml (markdown) {
-    return Marked(markdown)
+    return marked(markdown)
   }
 
   static highlight (element) {
